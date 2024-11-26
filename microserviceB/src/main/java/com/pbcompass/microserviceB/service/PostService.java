@@ -1,6 +1,7 @@
 package com.pbcompass.microserviceB.service;
 
 import com.pbcompass.microserviceB.entity.Post;
+import com.pbcompass.microserviceB.mapper.PostMapper;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+
     public Post findById(String id) {
         Optional<Post> post = postRepository.findById(id);
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
@@ -29,4 +31,15 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+  
+public Post create(Post post){
+        return postRepository.save(post);
+    }
+  
+    public Post updatePost(String id, String title, String body) {
+        Post post = findById(id);
+        post.setTitle(title);
+        post.setBody(body);
+        return postRepository.save(post);
+    }
 }

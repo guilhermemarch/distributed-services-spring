@@ -5,12 +5,10 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class PostDTO implements Serializable {
 
     private String documentId;

@@ -29,12 +29,16 @@ public class PostController {
         Post obj = postService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
-
-    @PostMapping
+  
+  @PostMapping
     public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto){
         Post post = postService.create(postMapper.toPost(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
     }
-
-
+  
+   @PutMapping("/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostDTO postDTO) {
+        Post updatedPost = postService.updatePost(id, postDTO.getTitle(), postDTO.getBody());
+        return ResponseEntity.ok(updatedPost);
+    }
 }

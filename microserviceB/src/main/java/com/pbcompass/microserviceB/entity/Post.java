@@ -20,8 +20,8 @@ public class Post implements Serializable {
 
     @Id
     private String documentId;
-    private String postId;
-    private String userId;
+    private Long postId;
+    private Long userId;
     private String title;
     private String body;
 

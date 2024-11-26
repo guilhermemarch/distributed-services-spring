@@ -3,7 +3,6 @@ package com.pbcompass.microserviceB.mapper;
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Post;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")

@@ -2,14 +2,11 @@ package com.pbcompass.microserviceB.controller;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Post;
-import com.pbcompass.microserviceB.repository.PostRepository;
 import com.pbcompass.microserviceB.mapper.PostMapper;
 
 import com.pbcompass.microserviceB.service.PostService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,27 +24,26 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Post> findById(@PathVariable String id) {
-        Post obj = postService.findById(id);
-        return ResponseEntity.ok().body(obj);
-
+    public ResponseEntity<PostDTO> findById(@PathVariable String id) {
+        Post post = postService.findById(id);
+        return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
 
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
         postService.delete(id);
         return ResponseEntity.noContent().build();
     }
-  
-  @PostMapping
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto){
+
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
         Post post = postService.create(postMapper.toPost(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
     }
-  
-   @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostDTO postDTO) {
-        Post updatedPost = postService.updatePost(id, postDTO.getTitle(), postDTO.getBody());
-        return ResponseEntity.ok(updatedPost);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostDTO> updatePost(@PathVariable String id, @RequestBody PostDTO dto) {
+        Post post = postService.update(id, postMapper.toPost(dto));
+        return ResponseEntity.ok(postMapper.toDTO(post));
     }
 }

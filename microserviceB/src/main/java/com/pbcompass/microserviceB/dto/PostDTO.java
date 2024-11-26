@@ -1,9 +1,9 @@
 package com.pbcompass.microserviceB.dto;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,8 +11,9 @@ import java.util.Objects;
 @Setter
 public class PostDTO implements Serializable {
 
-    private Long postId;
     private Long userId;
+    @Field("postId")
+    private Long id;
     private String title;
     private String body;
 

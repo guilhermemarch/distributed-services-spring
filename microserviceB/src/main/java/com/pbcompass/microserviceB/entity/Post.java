@@ -1,4 +1,4 @@
 package com.pbcompass.microserviceB.entity;
 
-public class comments {
+public class Post {
 }

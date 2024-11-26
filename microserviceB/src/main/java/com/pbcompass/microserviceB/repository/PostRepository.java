@@ -1,4 +1,4 @@
 package com.pbcompass.microserviceB.repository;
 
-public class postRepository {
+public class PostRepository {
 }

@@ -1,4 +1,4 @@
 package com.pbcompass.microserviceB.service;
 
-public class postService {
+public class CommentsService {
 }

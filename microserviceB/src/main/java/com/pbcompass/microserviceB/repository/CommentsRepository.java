@@ -1,4 +1,7 @@
 package com.pbcompass.microserviceB.repository;
 
-public class CommentsRepository {
+import com.pbcompass.microserviceB.entity.Comments;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface CommentsRepository extends MongoRepository<Comments, String> {
 }

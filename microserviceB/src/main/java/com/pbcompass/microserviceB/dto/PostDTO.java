@@ -11,22 +11,9 @@ import java.util.Objects;
 @Setter
 public class PostDTO implements Serializable {
 
-    private String documentId;
     private Long postId;
     private Long userId;
     private String title;
     private String body;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostDTO postDTO = (PostDTO) o;
-        return Objects.equals(documentId, postDTO.documentId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(documentId);
-    }
 }

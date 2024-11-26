@@ -18,4 +18,11 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
     }
+
+    public Post updatePost(String id, String title, String body) {
+        Post post = findById(id);
+        post.setTitle(title);
+        post.setBody(body);
+        return postRepository.save(post);
+    }
 }

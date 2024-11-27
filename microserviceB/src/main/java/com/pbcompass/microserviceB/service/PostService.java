@@ -4,6 +4,7 @@ import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.feign.PostClient;
 import com.pbcompass.microserviceB.repository.PostRepository;
+import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class PostService {
     public List<Post> findAll() {
         List<Post> posts = postRepository.findAll();
         if (posts.isEmpty()) {
-            throw new ObjectNotFoundException("No posts found");
+            throw new NoPostsFoundException("No posts found");
         }
         return posts;
     }

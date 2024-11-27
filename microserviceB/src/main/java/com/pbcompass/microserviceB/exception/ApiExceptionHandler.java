@@ -1,5 +1,6 @@
 package com.pbcompass.microserviceB.exception;
 
+import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,19 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
+
+    @ExceptionHandler(NoPostsFoundException.class)
+    public ResponseEntity<ErrorMessage> handleNoPostsFoundException(NoPostsFoundException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(
+                request.getRequestURI(),
+                request.getMethod(),
+                HttpStatus.NOT_FOUND.value(),
+                "No posts Found",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    }
+
+
+
 }

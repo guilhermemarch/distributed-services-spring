@@ -44,4 +44,14 @@ public class PostService {
     public List<PostDTO> findPostsJsonPlaceholder() {
         return postClient.getPosts();
     }
+
+    public List<Post> findAll() {
+        List<Post> posts = postRepository.findAll();
+        if (posts.isEmpty()) {
+            throw new ObjectNotFoundException("No posts found");
+        }
+        return posts;
+    }
+
+
 }

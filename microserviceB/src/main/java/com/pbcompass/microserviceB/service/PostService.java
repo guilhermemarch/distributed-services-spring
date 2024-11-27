@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,4 +43,14 @@ public Post create(Post post){
         post.setBody(body);
         return postRepository.save(post);
     }
+
+    public List<Post> findAll() {
+        List<Post> posts = postRepository.findAll();
+        if (posts.isEmpty()) {
+            throw new ObjectNotFoundException("No posts found");
+        }
+        return posts;
+    }
+
+
 }

@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/posts")
 public class PostController {
@@ -50,4 +52,12 @@ public class PostController {
         Post updatedPost = postService.updatePost(id, postDTO.getTitle(), postDTO.getBody());
         return ResponseEntity.ok(updatedPost);
     }
+
+    @GetMapping(value = "/allposts")
+    public ResponseEntity<List<Post>> findAll() {
+        List<Post> obj = postService.findAll();
+        return ResponseEntity.ok().body(obj);
+    }
+
+
 }

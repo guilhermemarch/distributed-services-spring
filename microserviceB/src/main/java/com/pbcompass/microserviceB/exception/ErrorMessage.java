@@ -14,3 +14,4 @@ public class ErrorMessage {
     private String error;
     private String message;
 }
+

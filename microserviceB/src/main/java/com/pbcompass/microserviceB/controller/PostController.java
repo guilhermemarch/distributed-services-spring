@@ -77,5 +77,4 @@ public class PostController {
         List<Post> obj = postService.findAll();
         return ResponseEntity.ok().body(obj);
     }
-
 }

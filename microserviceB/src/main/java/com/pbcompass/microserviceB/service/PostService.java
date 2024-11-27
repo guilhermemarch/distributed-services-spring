@@ -2,7 +2,7 @@ package com.pbcompass.microserviceB.service;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Post;
-import com.pbcompass.microserviceB.exception.ObjectNotFoundException;
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import com.pbcompass.microserviceB.feign.PostClient;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class PostService {
     }
 
     public Post create(Post post) {
-        return postRepository.save(post);
+            return postRepository.save(post);
     }
 
     public Post update(String id, Post post) {

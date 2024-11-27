@@ -1,7 +1,10 @@
 package com.pbcompass.microserviceB.exception;
 
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
+import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,5 +23,29 @@ public class ApiExceptionHandler {
                 ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorMessage> handleInvalidDataException(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(
+                request.getRequestURI(),
+                request.getMethod(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                "The values of id and userId should be numbers"
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(UnexpectedTypeException.class)
+    public ResponseEntity<ErrorMessage> handleUnexpectedTypeException(UnexpectedTypeException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(
+                request.getRequestURI(),
+                request.getMethod(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                "Invalid data"
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }

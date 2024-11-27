@@ -27,18 +27,11 @@ public class PostController {
     public PostController(PostMapper postMapper) {
         this.postMapper = postMapper;
     }
-
-
-    private final PostMapper postMapper;
-
-    public PostController(PostMapper postMapper) {
-        this.postMapper = postMapper;
-    }
-
+    
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable String id) {
-        Post post = postService.findById(id);
-        return ResponseEntity.ok().body(postMapper.toDTO(post));
+    public ResponseEntity<Post> findById(@PathVariable String id) {
+        Post obj = postService.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -66,7 +59,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @PostMapping
+    @PostMapping("/syncData")
     public ResponseEntity<List<PostDTO>> syncData() {
         List<PostDTO> postsFromPlaceholder = postService.findPostsJsonPlaceholder();
         List<PostDTO> createdPosts = new ArrayList<>();

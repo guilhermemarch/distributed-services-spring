@@ -1,14 +1,21 @@
 package com.pbcompass.microserviceB;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
+import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import com.pbcompass.microserviceB.entity.Post;
+import com.pbcompass.microserviceB.service.PostService;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PostIT {
@@ -17,10 +24,14 @@ public class PostIT {
     WebTestClient testClient;
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
+
+    @Autowired
+    private PostService postService;
+
 
     @Test
-    public void createPost_WithValidData_ReturnsStatus201(){
+    public void createPost_WithValidData_ReturnsStatus201() {
         PostDTO responseBody = testClient
                 .post()
                 .uri("/posts")
@@ -39,7 +50,38 @@ public class PostIT {
     }
 
     @Test
-    public void findPostsJsonPlaceholder_ReturnStatus200(){
+    public void findAll_WithoutPosts_ThrowsNoPostsFoundException() {
+        postRepository.deleteAll();
+
+        assertThat(postRepository.findAll()).isEmpty();
+
+        assertThatThrownBy(() -> postService.findAll())
+                .isInstanceOf(NoPostsFoundException.class)
+                .hasMessage("No posts found");
+    }
+
+    @Test
+    public void findAll_WithPosts_ReturnsPostList() {
+        postRepository.deleteAll();
+
+        PostDTO responseBody = testClient
+                .post()
+                .uri("/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new PostDTO(7L, 1L, "corsabrancoturbinado", "BODY TEST"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(PostDTO.class)
+                .returnResult().getResponseBody();
+
+        List<Post> posts = postService.findAll();
+        assertThat(posts).isNotEmpty();
+        assertThat(posts).hasSize(1);
+        assertThat(posts.get(0).getTitle()).isEqualTo("corsabrancoturbinado");
+    }
+
+    @Test
+    public void findPostsJsonPlaceholder_ReturnStatus200() {
         List<PostDTO> responseBody = testClient
                 .get()
                 .uri("/posts/syncData")
@@ -53,7 +95,7 @@ public class PostIT {
     }
 
     @Test
-    public void syncData_ReturnStatus201(){
+    public void syncData_ReturnStatus201() {
         List<PostDTO> responseBody = testClient
                 .post()
                 .uri("/posts/syncData")
@@ -62,10 +104,10 @@ public class PostIT {
                 .expectBodyList(PostDTO.class)
                 .returnResult().getResponseBody();
 
-        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();;
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+
         postRepository.deleteAll();
     }
 
-
-
 }
+

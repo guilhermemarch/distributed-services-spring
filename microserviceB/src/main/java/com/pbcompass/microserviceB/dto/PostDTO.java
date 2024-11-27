@@ -12,7 +12,7 @@ import java.util.Objects;
 public class PostDTO implements Serializable {
 
     private String documentId;
-    private Long postId;
+    private Long id;
     private Long userId;
     private String title;
     private String body;

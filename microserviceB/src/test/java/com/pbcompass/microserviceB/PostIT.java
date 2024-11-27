@@ -1,6 +1,7 @@
 package com.pbcompass.microserviceB;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
+import com.pbcompass.microserviceB.dto.UpdatePostDTO;
 import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PostIT {
 
@@ -28,7 +28,6 @@ public class PostIT {
 
     @Autowired
     private PostService postService;
-
 
     @Test
     public void createPost_WithValidData_ReturnsStatus201() {
@@ -45,6 +44,25 @@ public class PostIT {
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
         org.assertj.core.api.Assertions.assertThat(responseBody.getId()).isEqualTo(1L);
         org.assertj.core.api.Assertions.assertThat(responseBody.getUserId()).isEqualTo(7L);
+        org.assertj.core.api.Assertions.assertThat(responseBody.getTitle()).isEqualTo("TITLE TEST");
+        org.assertj.core.api.Assertions.assertThat(responseBody.getBody()).isEqualTo("BODY TEST");
+    }
+
+    @Test
+    public void updatePost_WithValidData_ReturnsStatus200() {
+        PostDTO responseBody = testClient
+                .put()
+                .uri("/posts/67477aa2f2926210290d5143")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UpdatePostDTO(4L, 3L, "TITLE TEST", "BODY TEST"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(PostDTO.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(responseBody.getId()).isEqualTo(1L);
+        org.assertj.core.api.Assertions.assertThat(responseBody.getUserId()).isEqualTo(1L);
         org.assertj.core.api.Assertions.assertThat(responseBody.getTitle()).isEqualTo("TITLE TEST");
         org.assertj.core.api.Assertions.assertThat(responseBody.getBody()).isEqualTo("BODY TEST");
     }

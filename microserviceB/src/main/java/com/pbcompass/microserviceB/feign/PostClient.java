@@ -1,7 +1,6 @@
 package com.pbcompass.microserviceB.feign;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
-import com.pbcompass.microserviceB.entity.Post;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

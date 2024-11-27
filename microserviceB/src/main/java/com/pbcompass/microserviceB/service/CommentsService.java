@@ -1,4 +1,4 @@
-package com.pbcompass.microserviceB.service.exception;
+package com.pbcompass.microserviceB.service;
 
 import org.springframework.stereotype.Service;
 

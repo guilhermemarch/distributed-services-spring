@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value = "/posts")
 public class PostController {
@@ -26,13 +27,31 @@ public class PostController {
     public PostController(PostMapper postMapper) {
         this.postMapper = postMapper;
     }
-
+    
     @GetMapping(value = "/{id}")
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = postService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+        postService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
+        Post post = postService.create(postMapper.toPost(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostDTO> updatePost(@PathVariable String id, @RequestBody PostDTO dto) {
+        Post post = postService.update(id, postMapper.toPost(dto));
+        return ResponseEntity.ok(postMapper.toDTO(post));
+    }
+  
     @GetMapping("/syncData")
     public ResponseEntity<List<PostDTO>> findAllJsonPlaceholder() {
         List<PostDTO> posts = postService.findPostsJsonPlaceholder();
@@ -52,6 +71,4 @@ public class PostController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPosts);
     }
-
-
 }

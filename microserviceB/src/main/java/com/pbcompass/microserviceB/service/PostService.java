@@ -24,12 +24,24 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
     }
-
-    public List<PostDTO> findPostsJsonPlaceholder() {
-        return postClient.getPosts();
+  
+    public void delete(String id) {
+        postRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+        postRepository.deleteById(id);
     }
 
-    public Post create(Post post){
+    public Post create(Post post) {
         return postRepository.save(post);
+    }
+
+    public Post update(String id, Post post) {
+        Post postUpd = findById(id);
+        postUpd.setTitle(post.getTitle());
+        postUpd.setBody(post.getBody());
+        return postRepository.save(postUpd);
+    }
+  
+    public List<PostDTO> findPostsJsonPlaceholder() {
+        return postClient.getPosts();
     }
 }

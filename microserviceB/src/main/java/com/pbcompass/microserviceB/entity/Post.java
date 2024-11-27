@@ -21,8 +21,9 @@ public class Post implements Serializable {
 
     @Id
     private String documentId;
-    private Long id;
     private Long userId;
+    @Field("postId")
+    private Long id;
     private String title;
     private String body;
 

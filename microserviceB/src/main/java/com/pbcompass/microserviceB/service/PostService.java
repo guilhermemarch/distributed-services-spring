@@ -26,8 +26,8 @@ public class PostService {
     }
   
     public void delete(String id) {
-        postRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found"));
-        postRepository.deleteById(id);
+        Post post = findById(id);
+        postRepository.delete(post);
     }
 
     public Post create(Post post) {

@@ -4,6 +4,7 @@ import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.mapper.PostMapper;
 import com.pbcompass.microserviceB.service.PostService;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
+    public ResponseEntity<PostDTO> createPost(@RequestBody @Valid PostDTO dto) {
         Post post = postService.create(postMapper.toPost(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
     }
@@ -76,6 +77,5 @@ public class PostController {
         List<Post> obj = postService.findAll();
         return ResponseEntity.ok().body(obj);
     }
-
 
 }

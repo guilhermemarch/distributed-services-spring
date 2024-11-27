@@ -1,5 +1,6 @@
 package com.pbcompass.microserviceB.controller;
 import com.pbcompass.microserviceB.dto.PostDTO;
+import com.pbcompass.microserviceB.dto.UpdatePostDTO;
 import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.mapper.PostMapper;
 import com.pbcompass.microserviceB.service.PostService;
@@ -32,7 +33,6 @@ public class PostController {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
-   
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable String id) {
@@ -47,9 +47,9 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDTO> updatePost(@PathVariable String id, @RequestBody PostDTO dto) {
-        Post post = postService.update(id, postMapper.toPost(dto));
-        return ResponseEntity.ok(postMapper.toDTO(post));
+    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
+        Post post = postService.update(id, postMapper.UpdatetoPost(dto));
+        return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
   
     @GetMapping("/syncData")

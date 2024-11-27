@@ -37,6 +37,8 @@ public class PostService {
 
     public Post update(String id, Post post) {
         Post postUpd = findById(id);
+        postUpd.getUserId();
+        postUpd.getId();
         postUpd.setTitle(post.getTitle());
         postUpd.setBody(post.getBody());
         return postRepository.save(postUpd);

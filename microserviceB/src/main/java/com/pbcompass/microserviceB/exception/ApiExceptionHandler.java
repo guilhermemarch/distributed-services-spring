@@ -27,7 +27,6 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
 
-
     @ExceptionHandler(NoPostsFoundException.class)
     public ResponseEntity<ErrorMessage> handleNoPostsFoundException(NoPostsFoundException ex, HttpServletRequest request) {
         ErrorMessage errorMessage = new ErrorMessage(
@@ -39,7 +38,6 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
-
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleInvalidDataException(HttpMessageNotReadableException ex, HttpServletRequest request) {

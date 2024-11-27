@@ -1,4 +1,4 @@
-package com.pbcompass.microserviceB.exception;
+package com.pbcompass.microserviceB.service.exception;
 
 public class InvalidDataException extends RuntimeException{
 

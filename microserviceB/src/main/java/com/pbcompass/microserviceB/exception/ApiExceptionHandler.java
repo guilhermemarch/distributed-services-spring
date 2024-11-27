@@ -1,5 +1,5 @@
 package com.pbcompass.microserviceB.exception;
-
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

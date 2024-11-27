@@ -2,12 +2,11 @@ package com.pbcompass.microserviceB.service;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Post;
-import com.pbcompass.microserviceB.exception.InvalidDataException;
-import com.pbcompass.microserviceB.exception.ObjectNotFoundException;
+
 import com.pbcompass.microserviceB.feign.PostClient;
 import com.pbcompass.microserviceB.repository.PostRepository;
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

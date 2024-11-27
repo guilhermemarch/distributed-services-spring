@@ -26,8 +26,7 @@ public class PostController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<PostDTO> findById(@PathVariable String id) {
         Post post = postService.findById(id);
-        return ResponseEntity.ok().body(postMapper.toDTO(post));
-    }
+        return ResponseEntity.ok().body(postMapper.toDTO(post));}
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable String id) {

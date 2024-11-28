@@ -7,6 +7,7 @@ import com.pbcompass.microserviceA.dto.CommentDTO;
 import com.pbcompass.microserviceA.dto.PostDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @FeignClient(name = "microservicob", url = "http://localhost:8081")
 public interface PostClient {
@@ -25,4 +26,10 @@ public interface PostClient {
 
     @GetMapping("/posts/{postId}/comments")
     List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);
+
+    @GetMapping("/{id}")
+    Optional<PostDTO> fetchByPostID(@PathVariable("id") long id);
+
+    @DeleteMapping("/{id}")
+    void deleteById(@PathVariable("id") long id);
 }

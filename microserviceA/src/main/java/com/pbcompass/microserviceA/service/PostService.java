@@ -19,11 +19,9 @@ public class PostService {
         return postClient.fetchAllPosts();
     }
 
-   // public PostDTO createPost(PostDTO postDTO) {
-    //    return postClient.createPost(postDTO);
-   // }
-
-
+    public Post createPost(Post post) {
+       return postClient.createPost(post);
+    }
 
     public PostDTO fetchPostById(String id) {
         return postClient.fetchPostById(id);

@@ -1,6 +1,7 @@
 package com.pbcompass.microserviceA.controller;
 
 import com.pbcompass.microserviceA.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
-
 public class postController {
 
         @Autowired
         private PostService postService;
 
-   //     private final PostMapper postMapper;
+        private final PostMapper postMapper;
 
+        public postController(PostMapper postMapper) {
+                this.postMapper = postMapper;
+        }
 
         @GetMapping("/allposts")
         public ResponseEntity<List<PostDTO>> getAllPosts() {
@@ -34,23 +37,18 @@ public class postController {
                 return postService.fetchPostById(id);
         }
 
+        @PostMapping
+        public ResponseEntity<PostDTO> createPost(@RequestBody @Valid PostDTO dto) {
+                Post post = postService.createPost(postMapper.toPost(dto));
+                return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
+        }
+
         @GetMapping("/{postId}/comments")
         public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
                 return postService.fetchCommentsByPostId(postId);
         }
 
-
-    //    @PostMapping //publicar post
-      //  public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto){
-     //                   Post post = postService.createPost(postMapper.toPost(dto));
-    //            return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
-   //     }
-
-
-
-
         //FAZER:
-        // POST publicar post,
         // PUT alterPostbyID,
         // DELETE deletepostbyID
 

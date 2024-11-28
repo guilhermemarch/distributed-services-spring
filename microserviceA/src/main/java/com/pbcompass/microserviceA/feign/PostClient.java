@@ -19,10 +19,8 @@ public interface PostClient {
     @GetMapping("/posts/{id}")
     PostDTO fetchPostById(@PathVariable String id);
 
-
-
-   // @PostMapping("/posts") //AINDA NAO FUNCIONA DIREITO, FALTA ARRUMAR
-  //  PostDTO createPost(PostDTO postDTO);
+    @PostMapping("/posts")
+    Post createPost(Post post);
 
     @GetMapping("/comments/bypost/{postId}")
     List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);

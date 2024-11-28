@@ -8,7 +8,6 @@ import java.util.List;
 
 @FeignClient(value = "PostClient", url = "https://jsonplaceholder.typicode.com/")
 public interface PostClient {
-
     @GetMapping(value = "/posts")
     List<PostDTO> getPosts();
 }

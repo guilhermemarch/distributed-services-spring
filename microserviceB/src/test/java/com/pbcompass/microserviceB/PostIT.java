@@ -129,5 +129,18 @@ public class PostIT {
         postRepository.deleteAll();
     }
 
+    @Test
+    public void deletePost_WithManualId_ReturnsStatus204() {
+        String manualId = "67460d5007e812415cbe0753";
+        boolean postExistsBeforeDelete = postRepository.findById(manualId).isPresent();
+        assertThat(postExistsBeforeDelete).isTrue();
+        testClient
+                .delete()
+                .uri("/posts/" + manualId)
+                .exchange()
+                .expectStatus().isNoContent();
+        boolean postExistsAfterDelete = postRepository.findById(manualId).isPresent();
+        assertThat(postExistsAfterDelete).isFalse();
+    }
 }
 

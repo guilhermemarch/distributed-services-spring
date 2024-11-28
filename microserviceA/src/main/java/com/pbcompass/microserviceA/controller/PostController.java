@@ -1,5 +1,6 @@
 package com.pbcompass.microserviceA.controller;
 
+import com.pbcompass.microserviceA.dto.UpdatePostDTO;
 import com.pbcompass.microserviceA.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
-public class postController {
+public class PostController {
 
         @Autowired
         private PostService postService;
 
         private final PostMapper postMapper;
 
-        public postController(PostMapper postMapper) {
+        public PostController(PostMapper postMapper) {
                 this.postMapper = postMapper;
         }
 
@@ -43,13 +44,18 @@ public class postController {
                 return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
         }
 
+        @PutMapping("/{id}")
+        public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
+                PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
+                return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
+        }
+
         @GetMapping("/{postId}/comments")
         public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
                 return postService.fetchCommentsByPostId(postId);
         }
 
         //FAZER:
-        // PUT alterPostbyID,
         // DELETE deletepostbyID
 
         //bonus:

@@ -1,9 +1,10 @@
 package com.pbcompass.microserviceA.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
@@ -12,10 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PostDTO implements Serializable {
+public class UpdatePostDTO implements Serializable {
 
-    @NotNull
     private Long userId;
 
     @Field("postId")

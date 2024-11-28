@@ -1,12 +1,9 @@
 package com.pbcompass.microserviceA.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,13 +13,15 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
+@ToString
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     private String documentId;
-    private Long postId;
     private Long userId;
+    @Field("postId")
+    private Long id;
     private String title;
     private String body;
 

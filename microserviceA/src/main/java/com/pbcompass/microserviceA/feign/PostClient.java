@@ -2,11 +2,9 @@ package com.pbcompass.microserviceA.feign;
 
 import com.pbcompass.microserviceA.entity.Post;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import com.pbcompass.microserviceA.dto.CommentDTO;
 import com.pbcompass.microserviceA.dto.PostDTO;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -22,6 +20,9 @@ public interface PostClient {
     @PostMapping("/posts")
     Post createPost(Post post);
 
-    @GetMapping("/comments/bypost/{postId}")
+    @PutMapping("/posts/{id}")
+    PostDTO updatePost(@PathVariable String id, @RequestBody PostDTO postdto);
+
+    @GetMapping("/posts/{postId}/comments")
     List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);
 }

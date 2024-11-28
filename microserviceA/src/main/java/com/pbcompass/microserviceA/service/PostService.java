@@ -23,6 +23,15 @@ public class PostService {
        return postClient.createPost(post);
     }
 
+    public PostDTO updatePost(String id, PostDTO postdto) {
+        PostDTO postUpd = fetchPostById(id);
+        postUpd.getUserId();
+        postUpd.getId();
+        postUpd.setTitle(postdto.getTitle());
+        postUpd.setBody(postdto.getBody());
+        return postClient.updatePost(id, postUpd);
+    }
+
     public PostDTO fetchPostById(String id) {
         return postClient.fetchPostById(id);
     }

@@ -5,7 +5,6 @@ import com.pbcompass.microserviceA.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-
 @Mapper(componentModel = "spring")
 public interface PostMapper {
 

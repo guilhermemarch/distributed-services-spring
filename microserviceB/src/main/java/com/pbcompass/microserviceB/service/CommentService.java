@@ -6,12 +6,16 @@ import com.pbcompass.microserviceB.entity.Comment;
 import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.feign.CommentClient;
 import com.pbcompass.microserviceB.feign.PostClient;
+import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.repository.CommentRepository;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -22,6 +26,9 @@ public class CommentService {
     @Autowired
     private CommentClient commentClient;
 
+    @Autowired
+    private PostRepository postRepository;
+
     public Comment create(Comment comment) {
         Comment lastComment = commentRepository.findTopByOrderByDocumentIdDesc();
         if (lastComment == null) {
@@ -30,11 +37,35 @@ public class CommentService {
             Long nextId = lastComment.getId() + 1;
             comment.setId(nextId);
         }
-        return commentRepository.save(comment);
+
+        //List<Post> posts = findPostsJsonPlaceholder();
+
+        Comment commentCreated = commentRepository.save(comment);
+
+        Optional<Post> optionalPost = postRepository.findById(comment.getPostId());
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            // Adiciona o comentário à lista de comentários do Post
+            if(post.getId() == comment.getPostId()) {
+                post.getComments().addAll(Arrays.asList(comment));
+            }
+            // Atualiza o Post no banco de dados
+            postRepository.save(post);
+        } else {
+            throw new RuntimeException("Post not found with ID: " + comment.getId());
+        }
+
+        return commentCreated;
     }
 
-    public List<CommentDTO> findPostsJsonPlaceholder() {
+    public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
+
+    public List<Post> findPostsJsonPlaceholder() {
+        return commentClient.getPosts();
+    }
+
 
 }

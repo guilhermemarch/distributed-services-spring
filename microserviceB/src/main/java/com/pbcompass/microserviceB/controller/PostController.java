@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/posts")
+@RequestMapping(value = "/api/posts")
 public class PostController {
 
     @Autowired
@@ -36,9 +36,9 @@ public class PostController {
     public PostController(PostMapper postMapper) {
         this.postMapper = postMapper;
     }
-    
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable String id) {
+
+    @GetMapping(value = "/document/{id}")
+    public ResponseEntity<PostDTO> findByDocumentId(@PathVariable String id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
@@ -90,16 +90,22 @@ public class PostController {
         return ResponseEntity.ok().body(postDTOs);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PostDTO> findById(@PathVariable long id) {
+        Post post = postService.findById(id);
+        return ResponseEntity.ok().body(postMapper.toDTO(post));
+    }
+
     @GetMapping("/syncDataComments")
     public ResponseEntity<List<CommentDTO>> findAllJsonPlaceholderComments() {
-        List<CommentDTO> comments = commentService.findPostsJsonPlaceholder();
+        List<CommentDTO> comments = commentService.findCommentsJsonPlaceholder();
 
         return ResponseEntity.ok(comments);
     }
 
     @PostMapping("/syncDataComments")
     public ResponseEntity<List<CommentDTO>> syncDataComments() {
-        List<CommentDTO> commentsFromPlaceholder = commentService.findPostsJsonPlaceholder();
+        List<CommentDTO> commentsFromPlaceholder = commentService.findCommentsJsonPlaceholder();
         List<CommentDTO> createdComments = new ArrayList<>();
 
         for (CommentDTO comment : commentsFromPlaceholder) {

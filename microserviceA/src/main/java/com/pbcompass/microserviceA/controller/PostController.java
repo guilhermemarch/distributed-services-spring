@@ -16,7 +16,7 @@ import com.pbcompass.microserviceA.mapper.PostMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
         @Autowired

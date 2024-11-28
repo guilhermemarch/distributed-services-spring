@@ -66,10 +66,9 @@ public class PostService {
         return posts;
     }
 
-    public Post findById(Long id) {
+    public Post findById(long id) {
         Optional<Post> post = postRepository.findById(id);
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }
-
 
 }

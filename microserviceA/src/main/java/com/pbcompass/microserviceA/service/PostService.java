@@ -2,12 +2,14 @@ package com.pbcompass.microserviceA.service;
 
 import com.pbcompass.microserviceA.entity.Post;
 import com.pbcompass.microserviceA.feign.PostClient;
+import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pbcompass.microserviceA.dto.CommentDTO;
 import com.pbcompass.microserviceA.dto.PostDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -20,7 +22,7 @@ public class PostService {
     }
 
     public Post createPost(Post post) {
-       return postClient.createPost(post);
+        return postClient.createPost(post);
     }
 
     public PostDTO updatePost(String id, PostDTO postdto) {
@@ -39,6 +41,19 @@ public class PostService {
     public List<CommentDTO> fetchCommentsByPostId(String postId) {
         return postClient.fetchCommentsByPostId(postId);
     }
+
+
+
+    public void deleteByPostID(long id) {
+        Optional<PostDTO> post = postClient.fetchByPostID(id);
+        if (!post.isPresent()) {
+            throw new NoPostsFoundException("No posts found with the id: " + id);
+        }
+
+        postClient.deleteById(id);
+    }
+
+
 }
 
 

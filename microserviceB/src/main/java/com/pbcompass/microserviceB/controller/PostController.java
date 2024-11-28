@@ -1,4 +1,5 @@
 package com.pbcompass.microserviceB.controller;
+
 import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
@@ -60,7 +61,7 @@ public class PostController {
         Post post = postService.update(id, postMapper.UpdatetoPost(dto));
         return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
-  
+
     @GetMapping("/syncData")
     public ResponseEntity<List<PostDTO>> findAllJsonPlaceholder() {
         List<PostDTO> posts = postService.findPostsJsonPlaceholder();
@@ -84,9 +85,7 @@ public class PostController {
     @GetMapping(value = "/allposts", produces = "application/json")
     public ResponseEntity<List<PostDTO>> findAll() {
         List<Post> posts = postService.findAll();
-        List<PostDTO> postDTOs = posts.stream()
-                .map(postMapper::toDTO)
-                .collect(Collectors.toList());
+        List<PostDTO> postDTOs = posts.stream().map(postMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(postDTOs);
     }
 
@@ -115,6 +114,4 @@ public class PostController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComments);
     }
-
-
 }

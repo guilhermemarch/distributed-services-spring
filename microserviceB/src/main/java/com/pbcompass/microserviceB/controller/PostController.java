@@ -1,9 +1,13 @@
 package com.pbcompass.microserviceB.controller;
 
+import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
+import com.pbcompass.microserviceB.entity.Comment;
 import com.pbcompass.microserviceB.entity.Post;
+import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.mapper.PostMapper;
+import com.pbcompass.microserviceB.service.CommentService;
 import com.pbcompass.microserviceB.service.PostService;
 
 import jakarta.validation.Valid;
@@ -23,7 +27,12 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentService commentService;
+
     private final PostMapper postMapper;
+
+    private CommentMapper commentMapper;
 
     public PostController(PostMapper postMapper) {
         this.postMapper = postMapper;
@@ -84,5 +93,25 @@ public class PostController {
     public ResponseEntity<PostDTO> findById(@PathVariable long id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
+    }
+  
+    @GetMapping("/syncDataComments")
+    public ResponseEntity<List<CommentDTO>> findAllJsonPlaceholderComments() {
+        List<CommentDTO> comments = commentService.findPostsJsonPlaceholder();
+
+        return ResponseEntity.ok(comments);
+    }
+
+    @PostMapping("/syncDataComments")
+    public ResponseEntity<List<CommentDTO>> syncDataComments() {
+        List<CommentDTO> commentsFromPlaceholder = commentService.findPostsJsonPlaceholder();
+        List<CommentDTO> createdComments = new ArrayList<>();
+
+        for (CommentDTO comment : commentsFromPlaceholder) {
+            Comment newComment = commentService.create(CommentMapper.INSTANCE.toPost(comment));
+            createdComments.add(CommentMapper.INSTANCE.toDTO(newComment));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComments);
     }
 }

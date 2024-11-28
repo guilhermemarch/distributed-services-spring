@@ -1,6 +1,5 @@
 package com.pbcompass.microserviceB.entity;
 
-import com.pbcompass.microserviceB.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,38 +9,39 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "post")
-public class Post implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Document(collection = "comment")
+public class Comment implements Serializable {
 
     @Id
     private String documentId;
-    private Long userId;
-    @Field("postId")
-    private Long id;
-    private String title;
-    private String body;
 
-    private List<CommentDTO> comments = new ArrayList<>();
+    private Long postId;
+
+    @Field("commentId")
+    private Long id;
+
+    private String name;
+
+    private String email;
+
+    private String body;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(documentId, post.documentId);
+        Comment comments = (Comment) o;
+        return Objects.equals(documentId, comments.documentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(documentId);
+        return Objects.hash(documentId);
     }
 }

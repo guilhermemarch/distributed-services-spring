@@ -55,8 +55,12 @@ public class PostController {
         return postService.fetchCommentsByPostId(postId);
     }
 
-    //FAZER:
-    // DELETE deletepostbyID
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable long id) {
+        postService.deleteByPostID(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //bonus:
     // Get posts/{postid}/comments

@@ -17,7 +17,6 @@ public class PostDTO implements Serializable {
     private Long userId;
 
     @Field("postId")
-    @NotNull
     private Long id;
 
     @NotBlank
@@ -31,5 +30,9 @@ public class PostDTO implements Serializable {
         this.body = body;
     }
 
-
+    public PostDTO(@NotNull Long userId, String title, String body) {
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
+    }
 }

@@ -188,5 +188,38 @@ public class PostIT {
                 .jsonPath("$.path").exists()
                 .jsonPath("$.method").exists();
     }
+
+    @Test
+    public void findById_PostNotFound_ReturnsStatus404() {
+        String invalidId = "non-existing-id";
+        testClient
+                .get()
+                .uri("/posts/" + invalidId)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(404)
+                .jsonPath("$.error").isEqualTo("Not Found");  // Corrigido para "Not Found"
+    }
+
+    @Test
+    public void findById_PostFound_ReturnsStatus200() {
+        // Supondo que o ID do post a ser encontrado seja "67460d5007e812415cbe0754"
+        String validId = "67460d5007e812415cbe0753";
+
+        // Certificando-se de que o post com esse ID existe
+        Post post = postRepository.findById(validId).orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // Realizando a requisição GET para buscar o post pelo ID
+        PostDTO responseBody = testClient
+                .get()
+                .uri("/posts/" + validId)
+                .exchange()
+                .expectStatus().isOk()  // Espera o status 200 (OK)
+                .expectBody(PostDTO.class)  // Espera o corpo da resposta como um PostDTO
+                .returnResult().getResponseBody();
+
+    }
+
 }
 

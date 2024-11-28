@@ -37,19 +37,13 @@ public class PostService {
     public Post create(Post post) {
         Post lastPost = postRepository.findTopByOrderByDocumentIdDesc();
         if (lastPost == null) {
-            post.setId(1L); // Banco vazio, começa em 1
+            post.setId(1L);
         } else {
             Long nextId = lastPost.getId() + 1;
-            post.setId(nextId); // Incrementa o postId
+            post.setId(nextId);
         }
         return postRepository.save(post);
     }
-
-//    public Post create(Post post) {
-//        Long lastPost = getLastPostId();
-//        post.setId(lastPost+1);
-//        return postRepository.save(post);
-//    }
 
     public Post update(String id, Post post) {
         Post postUpd = findById(id);

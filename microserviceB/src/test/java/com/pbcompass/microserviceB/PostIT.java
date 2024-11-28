@@ -33,7 +33,7 @@ public class PostIT {
 
 
 
-    //Matheus: CRIAR EXCEPTION CASO TENTE CRIAR UM POST COM UM postID já existente 
+    //Matheus: CRIAR EXCEPTION CASO TENTE CRIAR UM POST COM UM postID já existente
     @Test
     public void createPost_WithValidData_ReturnsStatus201() {
         PostDTO responseBody = testClient
@@ -155,13 +155,12 @@ public class PostIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-
         postRepository.deleteAll();
     }
 
     @Test
     public void deletePost_WithManualId_ReturnsStatus204() {
-        String manualId = "67460d5007e812415cbe0753";
+        String manualId = "67460d5007e812415cbe0754";
         boolean postExistsBeforeDelete = postRepository.findById(manualId).isPresent();
         assertThat(postExistsBeforeDelete).isTrue();
         testClient
@@ -171,6 +170,23 @@ public class PostIT {
                 .expectStatus().isNoContent();
         boolean postExistsAfterDelete = postRepository.findById(manualId).isPresent();
         assertThat(postExistsAfterDelete).isFalse();
+    }
+
+    @Test
+    public void deletePost_WithInvalidId_ReturnsStatus404() {
+        String invalidId = "67460d5007e812415cbe0759";
+        boolean postExists = postRepository.findById(invalidId).isPresent();
+        assertThat(postExists).isFalse();
+        testClient
+                .delete()
+                .uri("/posts/{id}", invalidId)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(404)
+                .jsonPath("$.error").isEqualTo("No posts Found")
+                .jsonPath("$.path").exists()
+                .jsonPath("$.method").exists();
     }
 }
 

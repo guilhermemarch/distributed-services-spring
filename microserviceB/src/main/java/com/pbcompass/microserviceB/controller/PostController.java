@@ -1,4 +1,5 @@
 package com.pbcompass.microserviceB.controller;
+
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
 import com.pbcompass.microserviceB.entity.Post;
@@ -27,9 +28,9 @@ public class PostController {
     public PostController(PostMapper postMapper) {
         this.postMapper = postMapper;
     }
-    
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable String id) {
+
+    @GetMapping(value = "/document/{id}")
+    public ResponseEntity<PostDTO> findByDocumentId(@PathVariable String id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
@@ -51,7 +52,7 @@ public class PostController {
         Post post = postService.update(id, postMapper.UpdatetoPost(dto));
         return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
-  
+
     @GetMapping("/syncData")
     public ResponseEntity<List<PostDTO>> findAllJsonPlaceholder() {
         List<PostDTO> posts = postService.findPostsJsonPlaceholder();
@@ -75,9 +76,13 @@ public class PostController {
     @GetMapping(value = "/allposts", produces = "application/json")
     public ResponseEntity<List<PostDTO>> findAll() {
         List<Post> posts = postService.findAll();
-        List<PostDTO> postDTOs = posts.stream()
-                .map(postMapper::toDTO)
-                .collect(Collectors.toList());
+        List<PostDTO> postDTOs = posts.stream().map(postMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(postDTOs);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PostDTO> findById(@PathVariable long id) {
+        Post post = postService.findById(id);
+        return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
 }

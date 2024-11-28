@@ -20,7 +20,7 @@ public class PostService {
     }
 
     public Post createPost(Post post) {
-       return postClient.createPost(post);
+        return postClient.createPost(post);
     }
 
     public PostDTO updatePost(String id, PostDTO postdto) {

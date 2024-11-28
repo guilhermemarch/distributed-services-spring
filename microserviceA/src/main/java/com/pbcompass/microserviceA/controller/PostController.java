@@ -19,48 +19,48 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-        @Autowired
-        private PostService postService;
+    @Autowired
+    private PostService postService;
 
-        private final PostMapper postMapper;
+    private final PostMapper postMapper;
 
-        public PostController(PostMapper postMapper) {
-                this.postMapper = postMapper;
-        }
+    public PostController(PostMapper postMapper) {
+        this.postMapper = postMapper;
+    }
 
-        @GetMapping("/allposts")
-        public ResponseEntity<List<PostDTO>> getAllPosts() {
-                return ResponseEntity.ok(postService.fetchAllPosts());
-        }
+    @GetMapping("/allposts")
+    public ResponseEntity<List<PostDTO>> getAllPosts() {
+        return ResponseEntity.ok(postService.fetchAllPosts());
+    }
 
-        @GetMapping("/{id}")
-        public PostDTO getPostById(@PathVariable String id) {
-                return postService.fetchPostById(id);
-        }
+    @GetMapping("/{id}")
+    public PostDTO getPostById(@PathVariable String id) {
+        return postService.fetchPostById(id);
+    }
 
-        @PostMapping
-        public ResponseEntity<PostDTO> createPost(@RequestBody @Valid PostDTO dto) {
-                Post post = postService.createPost(postMapper.toPost(dto));
-                return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
-        }
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(@RequestBody @Valid PostDTO dto) {
+        Post post = postService.createPost(postMapper.toPost(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
+    }
 
-        @PutMapping("/{id}")
-        public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
-                PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
-                return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
+        PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
+        return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
+    }
 
-        @GetMapping("/{postId}/comments")
-        public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
-                return postService.fetchCommentsByPostId(postId);
-        }
+    @GetMapping("/{postId}/comments")
+    public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
+        return postService.fetchCommentsByPostId(postId);
+    }
 
-        //FAZER:
-        // DELETE deletepostbyID
+    //FAZER:
+    // DELETE deletepostbyID
 
-        //bonus:
-        // Get posts/{postid}/comments
-        // POST posts/{postid}/comments
-        // PUT posts/{postID}
-        // DELETE posts/{POSTID}/{commentID}
+    //bonus:
+    // Get posts/{postid}/comments
+    // POST posts/{postid}/comments
+    // PUT posts/{postID}
+    // DELETE posts/{POSTID}/{commentID}
 }

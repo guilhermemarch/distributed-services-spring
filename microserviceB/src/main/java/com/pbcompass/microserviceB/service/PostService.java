@@ -45,12 +45,6 @@ public class PostService {
         return postRepository.save(post);
     }
 
-//    public Post create(Post post) {
-//        Long lastPost = getLastPostId();
-//        post.setId(lastPost+1);
-//        return postRepository.save(post);
-//    }
-
     public Post update(String id, Post post) {
         Post postUpd = findById(id);
         postUpd.getUserId();
@@ -70,6 +64,11 @@ public class PostService {
             throw new NoPostsFoundException("No posts found");
         }
         return posts;
+    }
+
+    public Post findById(long id) {
+        Optional<Post> post = postRepository.findById(id);
+        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }
 
 

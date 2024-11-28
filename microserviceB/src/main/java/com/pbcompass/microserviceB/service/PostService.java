@@ -71,5 +71,4 @@ public class PostService {
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }
 
-
 }

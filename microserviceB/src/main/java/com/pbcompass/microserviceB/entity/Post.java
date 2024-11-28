@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -30,7 +31,8 @@ public class Post implements Serializable {
     private String title;
     private String body;
 
-    private List<CommentDTO> comments = new ArrayList<>();
+    @DBRef(lazy = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

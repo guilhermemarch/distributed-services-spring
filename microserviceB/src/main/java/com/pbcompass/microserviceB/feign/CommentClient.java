@@ -2,6 +2,7 @@ package com.pbcompass.microserviceB.feign;
 
 import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.dto.PostDTO;
+import com.pbcompass.microserviceB.entity.Post;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -11,4 +12,7 @@ public interface CommentClient {
 
     @GetMapping(value = "/comments")
     List<CommentDTO> getComments();
+
+    @GetMapping(value = "/posts")
+    List<Post> getPosts();
 }

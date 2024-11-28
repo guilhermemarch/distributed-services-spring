@@ -1,0 +1,62 @@
+package com.pbcompass.microserviceA.controller;
+
+import com.pbcompass.microserviceA.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.pbcompass.microserviceA.dto.CommentDTO;
+import com.pbcompass.microserviceA.dto.PostDTO;
+import com.pbcompass.microserviceA.entity.Post;
+import com.pbcompass.microserviceA.mapper.PostMapper;
+
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/posts")
+
+public class postController {
+
+        @Autowired
+        private PostService postService;
+
+   //     private final PostMapper postMapper;
+
+
+        @GetMapping("/allposts")
+        public ResponseEntity<List<PostDTO>> getAllPosts() {
+                return ResponseEntity.ok(postService.fetchAllPosts());
+        }
+
+        @GetMapping("/{id}")
+        public PostDTO getPostById(@PathVariable String id) {
+                return postService.fetchPostById(id);
+        }
+
+        @GetMapping("/{postId}/comments")
+        public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
+                return postService.fetchCommentsByPostId(postId);
+        }
+
+
+    //    @PostMapping //publicar post
+      //  public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto){
+     //                   Post post = postService.createPost(postMapper.toPost(dto));
+    //            return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
+   //     }
+
+
+
+
+        //FAZER:
+        // POST publicar post,
+        // PUT alterPostbyID,
+        // DELETE deletepostbyID
+
+        //bonus:
+        // Get posts/{postid}/comments
+        // POST posts/{postid}/comments
+        // PUT posts/{postID}
+        // DELETE posts/{POSTID}/{commentID}
+}

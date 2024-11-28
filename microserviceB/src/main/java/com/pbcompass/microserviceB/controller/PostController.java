@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/posts")
@@ -71,9 +72,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPosts);
     }
 
-    @GetMapping(value = "/allposts")
-    public ResponseEntity<List<Post>> findAll() {
-        List<Post> obj = postService.findAll();
-        return ResponseEntity.ok().body(obj);
+    @GetMapping(value = "/allposts", produces = "application/json")
+    public ResponseEntity<List<PostDTO>> findAll() {
+        List<Post> posts = postService.findAll();
+        List<PostDTO> postDTOs = posts.stream()
+                .map(postMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(postDTOs);
     }
 }

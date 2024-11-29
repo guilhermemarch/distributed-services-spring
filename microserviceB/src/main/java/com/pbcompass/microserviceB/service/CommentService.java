@@ -109,7 +109,7 @@ public class CommentService {
         commentUpd.setBody(comment.getBody());
         return commentRepository.save(commentUpd);
     }
-
+  
     public void delete(Long id, Long commentId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + id));
@@ -129,6 +129,4 @@ public class CommentService {
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
-
-
 }

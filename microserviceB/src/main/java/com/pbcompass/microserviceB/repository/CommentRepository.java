@@ -1,5 +1,6 @@
 package com.pbcompass.microserviceB.repository;
 
+import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.entity.Comment;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

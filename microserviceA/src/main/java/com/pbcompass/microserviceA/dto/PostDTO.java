@@ -1,12 +1,16 @@
 package com.pbcompass.microserviceA.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pbcompass.microserviceB.entity.Comment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +30,7 @@ public class PostDTO implements Serializable {
 
     @NotBlank
     private String body;
+
+    @DBRef(lazy = true)
+    private List<Comment> comments = new ArrayList<>();
 }

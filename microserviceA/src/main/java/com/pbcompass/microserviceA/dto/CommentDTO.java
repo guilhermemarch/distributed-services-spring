@@ -1,7 +1,6 @@
 package com.pbcompass.microserviceA.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pbcompass.microserviceB.entity.Comment;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;

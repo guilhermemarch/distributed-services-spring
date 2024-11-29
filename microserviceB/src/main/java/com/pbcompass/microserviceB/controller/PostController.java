@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         postService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -57,7 +57,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
+    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
         Post post = postService.update(id, postMapper.UpdatetoPost(dto));
         return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
@@ -90,7 +90,7 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable long id) {
+    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
@@ -120,6 +120,12 @@ public class PostController {
         Comment comment = commentService.createComment(id, CommentMapper.INSTANCE.toPost(dto));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(CommentMapper.INSTANCE.toDTO(comment));
+    }
+
+    @DeleteMapping(value = "/{id}/{commentId}")
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
+        commentService.delete(commentId);
+        return ResponseEntity.noContent().build();
     }
 
 }

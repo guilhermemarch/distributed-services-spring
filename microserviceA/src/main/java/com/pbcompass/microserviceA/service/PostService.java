@@ -2,7 +2,7 @@ package com.pbcompass.microserviceA.service;
 
 import com.pbcompass.microserviceA.entity.Post;
 import com.pbcompass.microserviceA.feign.PostClient;
-import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pbcompass.microserviceA.dto.CommentDTO;
@@ -44,10 +44,10 @@ public class PostService {
 
 
 
-    public void deleteByPostID(long id) {
+    public void deleteByPostID(Long id) {
         Optional<PostDTO> post = postClient.fetchByPostID(id);
         if (!post.isPresent()) {
-            throw new NoPostsFoundException("No posts found with the id: " + id);
+            throw new ObjectNotFoundException("No posts found with the id: " + id);
         }
 
         postClient.deleteById(id);

@@ -36,7 +36,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                ex.getMessage()
+                "Invalid data"
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -48,7 +48,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                ex.getMessage()
+                "Invalid arguments"
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -64,18 +64,16 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorMessage> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
-        // Cria o erro personalizado
         ErrorMessage errorMessage = new ErrorMessage(
-                request.getRequestURI(), // URI da solicitação
-                request.getMethod(),     // Método HTTP da solicitação
-                HttpStatus.METHOD_NOT_ALLOWED.value(), // Código de status 405
-                "Method Not Allowed",    // Mensagem de erro
-                ex.getMessage()          // Mensagem detalhada da exceção
+                request.getRequestURI(),
+                request.getMethod(),
+                HttpStatus.METHOD_NOT_ALLOWED.value(),
+                "Method Not Allowed",
+                ex.getMessage()
         );
-
-        // Retorna a resposta com status 405 (Method Not Allowed)
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorMessage);
     }
 

@@ -102,8 +102,8 @@ public class PostController {
         List<CommentDTO> createdComments = new ArrayList<>();
 
         for (CommentDTO comment : commentsFromPlaceholder) {
-            Comment newComment = commentService.createFromJsonPlaceHolder(CommentMapper.INSTANCE.toComment(comment));
-            createdComments.add(CommentMapper.INSTANCE.toDTO(newComment));
+            Comment newComment = commentService.createFromJsonPlaceHolder(commentMapper.toComment(comment));
+            createdComments.add(commentMapper.toDTO(newComment));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComments);
@@ -111,9 +111,9 @@ public class PostController {
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDTO> createComment(@PathVariable Long id, @RequestBody @Valid CommentDTO dto){
-        Comment comment = commentService.createComment(id, CommentMapper.INSTANCE.toComment(dto));
+        Comment comment = commentService.createComment(id, commentMapper.toComment(dto));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommentMapper.INSTANCE.toDTO(comment));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.toDTO(comment));
     }
 
     @GetMapping("/{id}/comments")

@@ -21,7 +21,7 @@ public class PostService {
 
     public Post findById(Long id) {
         Optional<Post> post = postRepository.findById(id);
-        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+        return post.orElseThrow(() -> new ObjectNotFoundException("Post not found"));
     }
 
     public void delete(Long id) {

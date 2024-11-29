@@ -1,13 +1,11 @@
 package com.pbcompass.microserviceB.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.io.Serializable;
 
 @AllArgsConstructor

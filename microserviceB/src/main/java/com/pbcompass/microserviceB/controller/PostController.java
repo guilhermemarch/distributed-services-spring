@@ -9,13 +9,11 @@ import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.mapper.PostMapper;
 import com.pbcompass.microserviceB.service.CommentService;
 import com.pbcompass.microserviceB.service.PostService;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,11 +121,11 @@ public class PostController {
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<CommentDTO>> findAllComments(@PathVariable Long id){
+    public ResponseEntity<List<CommentDTO>> findAllComments(@PathVariable Long id) {
         List<Comment> comments = commentService.findAll(id);
         List<CommentDTO> commentDTOs = comments.stream().map(CommentMapper.INSTANCE::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(commentDTOs);
-
+    }
     @DeleteMapping(value = "/{id}/{commentId}")
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
         commentService.delete(commentId);

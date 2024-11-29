@@ -27,7 +27,7 @@ public class PostService {
     public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         if (!post.isPresent()) {
-            throw new ObjectNotFoundException("No posts found with the id: " + id);
+            throw new ObjectNotFoundException("No posts found with the id " + id);
         }
         postRepository.deleteById(id);
     }

@@ -110,16 +110,20 @@ public class CommentService {
         return commentRepository.save(commentUpd);
     }
 
-    public void delete(Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        if (!comment.isPresent()) {
-            throw new ObjectNotFoundException("No comment found with the id: " + id);
-        }
-        commentRepository.deleteById(id);
+    public void delete(Long id, Long commentId) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + id));
 
-        Post post = postRepository.findById(comment.get().getPostId()).get();
-        post.getComments().remove(comment.get());
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ObjectNotFoundException("No comment found with the id " + commentId));
+
+        if (!post.getComments().contains(comment)) {
+            throw new ObjectNotFoundException("No comment found with the id " + commentId + " in post with id " + id);
+        }
+
+        post.getComments().remove(comment);
         postRepository.save(post);
+        commentRepository.deleteById(commentId);
     }
 
     public List<CommentDTO> findCommentsJsonPlaceholder() {

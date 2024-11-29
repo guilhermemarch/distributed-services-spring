@@ -28,8 +28,8 @@ public interface PostClient {
     List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);
 
     @GetMapping("/{id}")
-    Optional<PostDTO> fetchByPostID(@PathVariable("id") long id);
+    Optional<PostDTO> fetchByPostID(@PathVariable("id") Long id);
 
     @DeleteMapping("/{id}")
-    void deleteById(@PathVariable("id") long id);
+    void deleteById(@PathVariable("id") Long id);
 }

@@ -1,6 +1,5 @@
 package com.pbcompass.microserviceB.entity;
 
-import com.pbcompass.microserviceB.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,8 @@ package com.pbcompass.microserviceB;
 
 import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
-import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import com.pbcompass.microserviceB.repository.PostRepository;
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -111,7 +111,7 @@ public class PostIT {
         assertThat(postRepository.findAll()).isEmpty();
 
         assertThatThrownBy(() -> postService.findAll())
-                .isInstanceOf(NoPostsFoundException.class)
+                .isInstanceOf(ObjectNotFoundException.class)
                 .hasMessage("No posts found");
     }
 

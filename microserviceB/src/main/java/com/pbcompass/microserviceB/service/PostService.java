@@ -5,10 +5,8 @@ import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import com.pbcompass.microserviceB.feign.PostClient;
 import com.pbcompass.microserviceB.repository.PostRepository;
-import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +24,10 @@ public class PostService {
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         if (!post.isPresent()) {
-            throw new NoPostsFoundException("No posts found with the id: " + id);
+            throw new ObjectNotFoundException("No posts found with the id: " + id);
         }
         postRepository.deleteById(id);
     }
@@ -45,7 +43,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post update(String id, Post post) {
+    public Post update(Long id, Post post) {
         Post postUpd = findById(id);
         postUpd.getUserId();
         postUpd.getId();
@@ -61,12 +59,12 @@ public class PostService {
     public List<Post> findAll() {
         List<Post> posts = postRepository.findAll();
         if (posts.isEmpty()) {
-            throw new NoPostsFoundException("No posts found");
+            throw new ObjectNotFoundException("No posts found");
         }
         return posts;
     }
 
-    public Post findById(long id) {
+    public Post findById(Long id) {
         Optional<Post> post = postRepository.findById(id);
         return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }

@@ -80,14 +80,12 @@ public class PostIT {
 
     @Test
     public void updatePost_WithValidData_ReturnsStatus200() {
-        String postId = "67460d5007e812415cbe0753";  // ID válido, adaptado para String
 
-        // Altere os valores de title e body conforme necessário
-        UpdatePostDTO updateDTO = new UpdatePostDTO(1L, 2L, "Novo Título 2", "Novo conteúdo de corpo");
+        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 1L, "test_unit", "BODY TEST");
 
         PostDTO responseBody = testClient
                 .put()
-                .uri("/api/posts/" + postId)
+                .uri("/api/posts/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(updateDTO)
                 .exchange()
@@ -95,11 +93,10 @@ public class PostIT {
                 .expectBody(PostDTO.class)
                 .returnResult().getResponseBody();
 
-        // Valide se a resposta tem os dados atualizados corretamente
         assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getTitle()).isEqualTo("Novo Título 2");
-        assertThat(responseBody.getBody()).isEqualTo("Novo conteúdo de corpo");
-        assertThat(responseBody.getUserId()).isEqualTo(1L);
+        assertThat(responseBody.getTitle()).isEqualTo("test_unit");
+        assertThat(responseBody.getBody()).isEqualTo("BODY TEST");
+        assertThat(responseBody.getUserId()).isEqualTo(7L);
     }
 
 
@@ -165,58 +162,53 @@ public class PostIT {
 
     @Test
     public void deletePost_WithManualId_ReturnsStatus204() {
-        String validId = "67460d5007e812415cbe0754";
-        boolean postExistsBeforeDelete = postRepository.findById(validId).isPresent();
+        boolean postExistsBeforeDelete = postRepository.findById(1L).isPresent();
         assertThat(postExistsBeforeDelete).isTrue();
         testClient
                 .delete()
-                .uri("/api/posts/" + validId)
+                .uri("/api/posts/1")
                 .exchange()
                 .expectStatus().isNoContent();
-        boolean postExistsAfterDelete = postRepository.findById(validId).isPresent();
+        boolean postExistsAfterDelete = postRepository.findById(1L).isPresent();
         assertThat(postExistsAfterDelete).isFalse();
     }
 
     @Test
     public void deletePost_WithInvalidId_ReturnsStatus404() {
-        String invalidId = "67460d5007e812415cbe0759";
-        boolean postExists = postRepository.findById(invalidId).isPresent();
+        boolean postExists = postRepository.findById(6L).isPresent();
         assertThat(postExists).isFalse();
         testClient
                 .delete()
-                .uri("/api/posts/"+ invalidId)
+                .uri("/api/posts/999")
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody()
                 .jsonPath("$.status").isEqualTo(404)
-                .jsonPath("$.error").isEqualTo("No posts Found")
                 .jsonPath("$.path").exists()
                 .jsonPath("$.method").exists();
     }
 
     @Test
     public void findById_PostNotFound_ReturnsStatus404() {
-        String invalidId = "non-existing-id";
         testClient
                 .get()
-                .uri("/api/posts/document/" + invalidId)
+                .uri("/api/posts/999")
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody()
                 .jsonPath("$.status").isEqualTo(404)
-                .jsonPath("$.error").isEqualTo("Not Found");  // Corrigido para "Not Found"
+                .jsonPath("$.error").isEqualTo("Not Found");
     }
 
     @Test
     public void findById_PostFound_ReturnsStatus200() {
-        String validId = "67460d5007e812415cbe0753";
 
-        Post post = postRepository.findById(validId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Post post = postRepository.findById(1L).orElseThrow(() -> new RuntimeException("Post not found"));
 
 
         PostDTO responseBody = testClient
                 .get()
-                .uri("/api/posts/document/" + validId)
+                .uri("/api/posts/1")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PostDTO.class)

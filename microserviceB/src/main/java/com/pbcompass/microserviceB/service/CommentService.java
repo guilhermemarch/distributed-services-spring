@@ -100,6 +100,10 @@ public class CommentService {
             throw new ObjectNotFoundException("No comment found with the id: " + id);
         }
         commentRepository.deleteById(id);
+
+        Post post = postRepository.findById(comment.get().getPostId()).get();
+        post.getComments().remove(comment.get());
+        postRepository.save(post);
     }
 
     public List<CommentDTO> findCommentsJsonPlaceholder() {

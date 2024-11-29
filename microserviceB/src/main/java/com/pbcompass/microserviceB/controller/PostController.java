@@ -126,11 +126,11 @@ public class PostController {
         List<CommentDTO> commentDTOs = comments.stream().map(CommentMapper.INSTANCE::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(commentDTOs);
     }
+
     @DeleteMapping(value = "/{id}/{commentId}")
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
-        commentService.delete(commentId);
+        commentService.delete(id, commentId);
         return ResponseEntity.noContent().build();
-
     }
 
 }

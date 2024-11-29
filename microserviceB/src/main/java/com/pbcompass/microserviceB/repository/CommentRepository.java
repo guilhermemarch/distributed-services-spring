@@ -14,6 +14,4 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 
     void deleteById(Long id);
 
-    void deleteCommentById(Long id, Long commentId);
-
 }

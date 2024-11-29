@@ -19,9 +19,9 @@ public class PostService {
     @Autowired
     private PostClient postClient;
 
-    public Post findById(String id) {
+    public Post findById(Long id) {
         Optional<Post> post = postRepository.findById(id);
-        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }
 
     public void delete(Long id) {
@@ -62,11 +62,6 @@ public class PostService {
             throw new ObjectNotFoundException("No posts found");
         }
         return posts;
-    }
-
-    public Post findById(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
     }
 
 }

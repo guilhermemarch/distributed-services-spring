@@ -77,7 +77,7 @@ public class CommentService {
 
             postRepository.save(post);
         } else {
-            throw new RuntimeException("Post not found with ID: " + comment.getId());
+            throw new ObjectNotFoundException("Post not found with ID: " + id);
         }
 
         return commentCreated;
@@ -88,7 +88,7 @@ public class CommentService {
         List<Comment> comments = postRepository.findById(id).get().getComments();
 
         if (comments.isEmpty()) {
-            throw new ObjectNotFoundException("No posts found");
+            throw new ObjectNotFoundException("No comments found");
         }
 
         return comments;

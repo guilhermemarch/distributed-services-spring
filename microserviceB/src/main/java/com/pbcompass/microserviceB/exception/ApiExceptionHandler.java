@@ -9,6 +9,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -74,4 +75,19 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorMessage> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+        // Cria o erro personalizado
+        ErrorMessage errorMessage = new ErrorMessage(
+                request.getRequestURI(), // URI da solicitação
+                request.getMethod(),     // Método HTTP da solicitação
+                HttpStatus.METHOD_NOT_ALLOWED.value(), // Código de status 405
+                "Method Not Allowed",    // Mensagem de erro
+                ex.getMessage()          // Mensagem detalhada da exceção
+        );
+
+        // Retorna a resposta com status 405 (Method Not Allowed)
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorMessage);
+    }
+
 }

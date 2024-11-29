@@ -21,13 +21,13 @@ public class PostService {
 
     public Post findById(Long id) {
         Optional<Post> post = postRepository.findById(id);
-        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found(!)"));
+        return post.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
     }
 
     public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         if (!post.isPresent()) {
-            throw new ObjectNotFoundException("No posts found with the id: " + id);
+            throw new ObjectNotFoundException("No posts found with the id " + id);
         }
         postRepository.deleteById(id);
     }

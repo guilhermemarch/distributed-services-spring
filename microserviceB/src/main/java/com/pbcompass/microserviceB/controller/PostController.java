@@ -125,7 +125,7 @@ public class PostController {
 
     @DeleteMapping(value = "/{id}/{commentId}")
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
-        commentService.delete(commentId);
+        commentService.delete(id, commentId);
         return ResponseEntity.noContent().build();
     }
 

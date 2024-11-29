@@ -26,7 +26,7 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
-    public Comment create(Comment comment) {
+    public Comment createFromJsonPlaceHolder(Comment comment) {
         Comment lastComment = commentRepository.findTopByOrderByDocumentIdDesc();
         if (lastComment == null) {
             comment.setId(1L);
@@ -84,6 +84,16 @@ public class CommentService {
 
     }
 
+    public List<Comment> findAll(Long id) {
+        List<Comment> comments = postRepository.findById(id).get().getComments();
+
+        if (comments.isEmpty()) {
+            throw new ObjectNotFoundException("No posts found");
+        }
+
+        return comments;
+    }
+  
     public void delete(Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (!comment.isPresent()) {

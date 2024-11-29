@@ -13,6 +13,4 @@ public interface CommentClient {
     @GetMapping(value = "/comments")
     List<CommentDTO> getComments();
 
-    @GetMapping(value = "/posts")
-    List<Post> getPosts();
 }

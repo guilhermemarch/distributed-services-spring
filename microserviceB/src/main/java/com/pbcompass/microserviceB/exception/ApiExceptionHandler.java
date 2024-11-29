@@ -46,7 +46,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                "Invalid data"
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -58,7 +58,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                "Invalid data"
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -70,7 +70,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
-                "Invalid data"
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }

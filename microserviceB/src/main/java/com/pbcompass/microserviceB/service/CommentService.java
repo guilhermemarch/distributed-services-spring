@@ -38,19 +38,16 @@ public class CommentService {
             comment.setId(nextId);
         }
 
-        //List<Post> posts = findPostsJsonPlaceholder();
-
         Comment commentCreated = commentRepository.save(comment);
 
         Optional<Post> optionalPost = postRepository.findById(comment.getPostId());
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
 
-            // Adiciona o comentário à lista de comentários do Post
             if(post.getId() == comment.getPostId()) {
                 post.getComments().addAll(Arrays.asList(comment));
             }
-            // Atualiza o Post no banco de dados
+
             postRepository.save(post);
         } else {
             throw new RuntimeException("Post not found with ID: " + comment.getId());
@@ -62,10 +59,5 @@ public class CommentService {
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
-
-    public List<Post> findPostsJsonPlaceholder() {
-        return commentClient.getPosts();
-    }
-
 
 }

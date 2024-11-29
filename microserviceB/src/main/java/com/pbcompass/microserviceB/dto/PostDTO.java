@@ -41,4 +41,11 @@ public class PostDTO implements Serializable {
         this.title = title;
         this.body = body;
     }
+
+    public PostDTO(@NotNull Long userId, Long id, String title, String body) {
+        this.userId = userId;
+        this.id = id;
+        this.title = title;
+        this.body = body;
+    }
 }

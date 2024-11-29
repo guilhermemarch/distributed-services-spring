@@ -13,15 +13,18 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdatePostDTO implements Serializable {
+public class UpdateCommentDTO implements Serializable {
 
-    private Long userId;
+    private Long postId;
 
-    @Field("postId")
+    @Field("commentId")
     private Long id;
 
     @NotBlank
-    private String title;
+    private String name;
+
+    @NotBlank
+    private String email;
 
     @NotBlank
     private String body;

@@ -41,7 +41,7 @@ public class CommentService {
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
 
-            if(post.getId() == comment.getPostId()) {
+            if (post.getId() == comment.getPostId()) {
                 post.getComments().addAll(Arrays.asList(comment));
             }
 
@@ -53,7 +53,7 @@ public class CommentService {
         return commentCreated;
     }
 
-    public Comment createComment(Long id, Comment comment){
+    public Comment createComment(Long id, Comment comment) {
         Comment lastComment = commentRepository.findTopByOrderByDocumentIdDesc();
         if (lastComment == null) {
             comment.setId(1L);
@@ -71,7 +71,7 @@ public class CommentService {
             commentCreated = commentRepository.save(comment);
             Post post = optionalPost.get();
 
-            if(post.getId().equals(id)) {
+            if (post.getId().equals(id)) {
                 post.getComments().addAll(Arrays.asList(comment));
             }
 
@@ -93,7 +93,23 @@ public class CommentService {
 
         return comments;
     }
-  
+
+    public Comment update(Long id, Long commentId, Comment comment) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Post not found"));
+
+        Comment commentUpd = commentRepository.findById(commentId)
+                .filter(c -> c.getPostId().equals(post.getId()))
+                .orElseThrow(() -> new ObjectNotFoundException("Comment not found"));
+
+        commentUpd.getPostId();
+        commentUpd.getId();
+        commentUpd.setName(comment.getName());
+        commentUpd.setEmail(comment.getEmail());
+        commentUpd.setBody(comment.getBody());
+        return commentRepository.save(commentUpd);
+    }
+
     public void delete(Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (!comment.isPresent()) {
@@ -109,7 +125,6 @@ public class CommentService {
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
-
 
 
 }

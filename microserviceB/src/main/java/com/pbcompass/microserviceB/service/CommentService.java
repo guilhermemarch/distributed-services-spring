@@ -9,6 +9,7 @@ import com.pbcompass.microserviceB.feign.PostClient;
 import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.repository.CommentRepository;
 import com.pbcompass.microserviceB.repository.PostRepository;
+import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
-    public Comment create(Comment comment) {
+    public Comment createFromJsonPlaceHolder(Comment comment) {
         Comment lastComment = commentRepository.findTopByOrderByDocumentIdDesc();
         if (lastComment == null) {
             comment.setId(1L);
@@ -87,8 +88,20 @@ public class CommentService {
 
     }
 
+    public List<Comment> findAll(Long id) {
+        List<Comment> comments = postRepository.findById(id).get().getComments();
+
+        if (comments.isEmpty()) {
+            throw new NoPostsFoundException("No posts found");
+        }
+
+        return comments;
+    }
+
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
+
+
 
 }

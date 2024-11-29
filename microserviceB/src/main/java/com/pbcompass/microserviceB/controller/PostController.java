@@ -2,6 +2,7 @@ package com.pbcompass.microserviceB.controller;
 
 import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.dto.PostDTO;
+import com.pbcompass.microserviceB.dto.UpdateCommentDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
 import com.pbcompass.microserviceB.entity.Comment;
 import com.pbcompass.microserviceB.entity.Post;
@@ -32,12 +33,13 @@ public class PostController {
 
     private CommentMapper commentMapper;
 
-    public PostController(PostMapper postMapper) {
+    public PostController(PostMapper postMapper, CommentMapper commentMapper) {
         this.postMapper = postMapper;
+        this.commentMapper = commentMapper;
     }
 
-    @GetMapping(value = "/document/{id}")
-    public ResponseEntity<PostDTO> findByDocumentId(@PathVariable String id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
@@ -87,12 +89,6 @@ public class PostController {
         return ResponseEntity.ok().body(postDTOs);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
-        Post post = postService.findById(id);
-        return ResponseEntity.ok().body(postMapper.toDTO(post));
-    }
-
     @GetMapping("/syncDataComments")
     public ResponseEntity<List<CommentDTO>> findAllJsonPlaceholderComments() {
         List<CommentDTO> comments = commentService.findCommentsJsonPlaceholder();
@@ -106,8 +102,8 @@ public class PostController {
         List<CommentDTO> createdComments = new ArrayList<>();
 
         for (CommentDTO comment : commentsFromPlaceholder) {
-            Comment newComment = commentService.createFromJsonPlaceHolder(CommentMapper.INSTANCE.toPost(comment));
-            createdComments.add(CommentMapper.INSTANCE.toDTO(newComment));
+            Comment newComment = commentService.createFromJsonPlaceHolder(commentMapper.toComment(comment));
+            createdComments.add(commentMapper.toDTO(newComment));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComments);
@@ -115,9 +111,9 @@ public class PostController {
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDTO> createComment(@PathVariable Long id, @RequestBody @Valid CommentDTO dto){
-        Comment comment = commentService.createComment(id, CommentMapper.INSTANCE.toPost(dto));
+        Comment comment = commentService.createComment(id, commentMapper.toComment(dto));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommentMapper.INSTANCE.toDTO(comment));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.toDTO(comment));
     }
 
     @GetMapping("/{id}/comments")
@@ -131,6 +127,12 @@ public class PostController {
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
         commentService.delete(id, commentId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/{commentId}")
+    public ResponseEntity<UpdateCommentDTO> updateComment(@PathVariable Long id, @PathVariable Long commentId, @RequestBody @Valid UpdateCommentDTO dto) {
+        Comment comment = commentService.update(id, commentId, commentMapper.UpdatetoComment(dto));
+        return ResponseEntity.ok(commentMapper.UpdateCommentToDTO(comment));
     }
 
 }

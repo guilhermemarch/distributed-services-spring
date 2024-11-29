@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
 
-    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
+    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     PostDTO toDTO(Post post);
 

@@ -8,6 +8,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
@@ -32,7 +36,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                ex.getMessage()
+                "Invalid data"
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -44,7 +48,7 @@ public class ApiExceptionHandler {
                 request.getMethod(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                ex.getMessage()
+                "Invalid arguments"
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
@@ -60,4 +64,17 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorMessage> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(
+                request.getRequestURI(),
+                request.getMethod(),
+                HttpStatus.METHOD_NOT_ALLOWED.value(),
+                "Method Not Allowed",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorMessage);
+    }
+
 }

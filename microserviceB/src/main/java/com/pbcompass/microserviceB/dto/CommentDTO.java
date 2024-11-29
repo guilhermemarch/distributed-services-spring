@@ -1,13 +1,11 @@
 package com.pbcompass.microserviceB.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -16,7 +14,6 @@ import java.io.Serializable;
 @Setter
 public class CommentDTO implements Serializable {
 
-    @NotNull
     private Long postId;
 
     @Field("commentId")
@@ -37,7 +34,7 @@ public class CommentDTO implements Serializable {
         this.body = body;
     }
 
-    public CommentDTO(@NotNull Long postId, String name, String email, String body) {
+    public CommentDTO(Long postId, String name, String email, String body) {
         this.postId = postId;
         this.name = name;
         this.email = email;

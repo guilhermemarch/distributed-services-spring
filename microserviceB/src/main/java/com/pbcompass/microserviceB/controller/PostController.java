@@ -9,13 +9,11 @@ import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.mapper.PostMapper;
 import com.pbcompass.microserviceB.service.CommentService;
 import com.pbcompass.microserviceB.service.PostService;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +43,7 @@ public class PostController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         postService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -57,7 +55,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable String id, @RequestBody @Valid UpdatePostDTO dto) {
+    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
         Post post = postService.update(id, postMapper.UpdatetoPost(dto));
         return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
@@ -90,7 +88,7 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDTO> findById(@PathVariable long id) {
+    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
         Post post = postService.findById(id);
         return ResponseEntity.ok().body(postMapper.toDTO(post));
     }
@@ -108,10 +106,31 @@ public class PostController {
         List<CommentDTO> createdComments = new ArrayList<>();
 
         for (CommentDTO comment : commentsFromPlaceholder) {
-            Comment newComment = commentService.create(CommentMapper.INSTANCE.toPost(comment));
+            Comment newComment = commentService.createFromJsonPlaceHolder(CommentMapper.INSTANCE.toPost(comment));
             createdComments.add(CommentMapper.INSTANCE.toDTO(newComment));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComments);
     }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentDTO> createComment(@PathVariable Long id, @RequestBody @Valid CommentDTO dto){
+        Comment comment = commentService.createComment(id, CommentMapper.INSTANCE.toPost(dto));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommentMapper.INSTANCE.toDTO(comment));
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentDTO>> findAllComments(@PathVariable Long id) {
+        List<Comment> comments = commentService.findAll(id);
+        List<CommentDTO> commentDTOs = comments.stream().map(CommentMapper.INSTANCE::toDTO).collect(Collectors.toList());
+        return ResponseEntity.ok().body(commentDTOs);
+    }
+    @DeleteMapping(value = "/{id}/{commentId}")
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @PathVariable Long commentId) {
+        commentService.delete(commentId);
+        return ResponseEntity.noContent().build();
+
+    }
+
 }

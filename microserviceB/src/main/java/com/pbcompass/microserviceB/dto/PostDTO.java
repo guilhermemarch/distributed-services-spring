@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

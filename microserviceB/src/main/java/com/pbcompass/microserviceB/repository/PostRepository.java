@@ -13,4 +13,6 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     Optional<Post> findById(Long id);
 
+    void deleteById(Long id);
+
 }

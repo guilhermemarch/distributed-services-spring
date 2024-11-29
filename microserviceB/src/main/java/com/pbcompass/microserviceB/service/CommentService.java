@@ -1,20 +1,16 @@
 package com.pbcompass.microserviceB.service;
 
 import com.pbcompass.microserviceB.dto.CommentDTO;
-import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.entity.Comment;
 import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.feign.CommentClient;
-import com.pbcompass.microserviceB.feign.PostClient;
-import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.repository.CommentRepository;
 import com.pbcompass.microserviceB.repository.PostRepository;
-import com.pbcompass.microserviceB.service.exception.NoPostsFoundException;
+import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,10 +88,18 @@ public class CommentService {
         List<Comment> comments = postRepository.findById(id).get().getComments();
 
         if (comments.isEmpty()) {
-            throw new NoPostsFoundException("No posts found");
+            throw new ObjectNotFoundException("No posts found");
         }
 
         return comments;
+    }
+  
+    public void delete(Long id) {
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (!comment.isPresent()) {
+            throw new ObjectNotFoundException("No comment found with the id: " + id);
+        }
+        commentRepository.deleteById(id);
     }
 
     public List<CommentDTO> findCommentsJsonPlaceholder() {

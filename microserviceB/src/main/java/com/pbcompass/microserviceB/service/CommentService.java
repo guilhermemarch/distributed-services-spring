@@ -56,6 +56,37 @@ public class CommentService {
         return commentCreated;
     }
 
+    public Comment createComment(Long id, Comment comment){
+        Comment lastComment = commentRepository.findTopByOrderByDocumentIdDesc();
+        if (lastComment == null) {
+            comment.setId(1L);
+        } else {
+            Long nextId = lastComment.getId() + 1;
+            comment.setId(nextId);
+        }
+
+        Comment commentCreated;
+
+        Optional<Post> optionalPost = postRepository.findById(id);
+
+        if (optionalPost.isPresent()) {
+            comment.setPostId(id);
+            commentCreated = commentRepository.save(comment);
+            Post post = optionalPost.get();
+
+            if(post.getId().equals(id)) {
+                post.getComments().addAll(Arrays.asList(comment));
+            }
+
+            postRepository.save(post);
+        } else {
+            throw new RuntimeException("Post not found with ID: " + comment.getId());
+        }
+
+        return commentCreated;
+
+    }
+
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }

@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Setter
 public class CommentDTO implements Serializable {
 
-    @NotNull
     private Long postId;
 
     @Field("commentId")
@@ -37,7 +36,7 @@ public class CommentDTO implements Serializable {
         this.body = body;
     }
 
-    public CommentDTO(@NotNull Long postId, String name, String email, String body) {
+    public CommentDTO(Long postId, String name, String email, String body) {
         this.postId = postId;
         this.name = name;
         this.email = email;

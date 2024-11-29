@@ -42,8 +42,6 @@ public class PostService {
         return postClient.fetchCommentsByPostId(postId);
     }
 
-
-
     public void deleteByPostID(long id) {
         Optional<PostDTO> post = postClient.fetchByPostID(id);
         if (!post.isPresent()) {
@@ -52,8 +50,6 @@ public class PostService {
 
         postClient.deleteById(id);
     }
-
-
 }
 
 

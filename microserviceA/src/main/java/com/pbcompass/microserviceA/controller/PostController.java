@@ -2,6 +2,7 @@ package com.pbcompass.microserviceA.controller;
 
 import com.pbcompass.microserviceA.dto.UpdateCommentDTO;
 import com.pbcompass.microserviceA.dto.UpdatePostDTO;
+import com.pbcompass.microserviceA.entity.Comment;
 import com.pbcompass.microserviceA.mapper.CommentMapper;
 import com.pbcompass.microserviceA.service.CommentService;
 import com.pbcompass.microserviceA.service.PostService;
@@ -52,16 +53,26 @@ public class PostController {
         Post post = postService.createPost(postMapper.toPost(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
     }
-/*
-    @PutMapping("/{id}")
-    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
-        PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
-        return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
+
+    /*
+        @PutMapping("/{id}")
+        public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
+            PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
+            return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
+        }
+    */
+    @GetMapping("/{postid}/comments")
+    public ResponseEntity<List<CommentDTO>> getCommentsByPost(@PathVariable("postId") long postId) {
+        List<CommentDTO> comments = commentService.fetchCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
     }
-*/
-    @GetMapping("/{postId}/comments")
-    public List<CommentDTO> getCommentsByPostId(@PathVariable String postId) {
-        return postService.fetchCommentsByPostId(postId);
+
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") long postId, @RequestBody @Valid CommentDTO dto) {
+        Comment commentEntity = commentMapper.toComment(dto);
+        Comment createdComment = commentService.createComment(postId, commentEntity); // Nota: ajustei para passar o postId
+        CommentDTO responseDto = commentMapper.toDTO(createdComment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @DeleteMapping(value = "/{id}")

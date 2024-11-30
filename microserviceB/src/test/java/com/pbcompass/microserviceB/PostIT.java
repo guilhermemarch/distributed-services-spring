@@ -202,10 +202,7 @@ public class PostIT {
 
     @Test
     public void findById_PostFound_ReturnsStatus200() {
-
         Post post = postRepository.findById(1L).orElseThrow(() -> new RuntimeException("Post not found"));
-
-
         PostDTO responseBody = testClient
                 .get()
                 .uri("/api/posts/1")

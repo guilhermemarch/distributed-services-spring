@@ -70,7 +70,7 @@ public class PostController {
     @PostMapping("/{postId}/comments")
     public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") long postId, @RequestBody @Valid CommentDTO dto) {
         Comment commentEntity = commentMapper.toComment(dto);
-        Comment createdComment = commentService.createComment(postId, commentEntity); // Nota: ajustei para passar o postId
+        Comment createdComment = commentService.createComment(postId, commentEntity);
         CommentDTO responseDto = commentMapper.toDTO(createdComment);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

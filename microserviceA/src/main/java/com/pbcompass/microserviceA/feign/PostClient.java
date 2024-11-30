@@ -52,7 +52,7 @@ public interface PostClient {
 
     List<CommentDTO> fetchCommentsByPostId(@PathVariable long postId);
 
-    @PostMapping("/posts/{postId}/comments")
-    Comment createComment(@PathVariable("postId") Long postId, @RequestBody Comment comment);
+    @PostMapping("/posts/{id}/comments")
+    Comment createComment(@PathVariable("id") Long postId, @RequestBody Comment comment);
 
 }

@@ -48,4 +48,11 @@ public interface PostClient {
 
     @DeleteMapping("/posts/{commentId}")
     void deleteCommentById(@PathVariable Long commendId);
+    @GetMapping("/posts/{postId}/comments")
+
+    List<CommentDTO> fetchCommentsByPostId(@PathVariable long postId);
+
+    @PostMapping("/posts/{postId}/comments")
+    Comment createComment(@PathVariable("postId") Long postId, @RequestBody Comment comment);
+
 }

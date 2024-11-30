@@ -36,6 +36,15 @@ public class CommentService {
         return commentClient.updateComment(postId, commentId, commentUpd);
     }
 
+    public List<CommentDTO> fetchCommentsByPostId(long postId) {
+        return commentClient.fetchCommentsByPostId(postId);
+    }
+
+    public Comment createComment(Long postId, Comment comment) {
+        return commentClient.createComment(postId, comment);
+    }
+
+
     public void deleteComment(Long postId, Long commentId) {
         Post post = commentClient.fetchPostById(postId)
                 .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + postId));

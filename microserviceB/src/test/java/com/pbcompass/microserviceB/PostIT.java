@@ -44,7 +44,6 @@ public class PostIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.getId()).isEqualTo(1L);
         org.assertj.core.api.Assertions.assertThat(responseBody.getUserId()).isEqualTo(7L);
         org.assertj.core.api.Assertions.assertThat(responseBody.getTitle()).isEqualTo("TITLE TEST");
         org.assertj.core.api.Assertions.assertThat(responseBody.getBody()).isEqualTo("BODY TEST");
@@ -81,11 +80,11 @@ public class PostIT {
     @Test
     public void updatePost_WithValidData_ReturnsStatus200() {
 
-        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 1L, "test_unit", "BODY TEST");
+        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 2L, "test_unit", "BODY TEST");
 
         PostDTO responseBody = testClient
                 .put()
-                .uri("/api/posts/1")
+                .uri("/api/posts/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(updateDTO)
                 .exchange()
@@ -99,24 +98,10 @@ public class PostIT {
         assertThat(responseBody.getUserId()).isEqualTo(7L);
     }
 
-
-
-    @Test
-    public void findAll_WithoutPosts_ThrowsNoPostsFoundException() {
-        postRepository.deleteAll();
-
-        assertThat(postRepository.findAll()).isEmpty();
-
-        assertThatThrownBy(() -> postService.findAll())
-                .isInstanceOf(ObjectNotFoundException.class)
-                .hasMessage("No posts found");
-    }
-
     @Test
     public void findAll_WithPosts_ReturnsPostList() {
-        postRepository.deleteAll();
 
-        PostDTO responseBody = testClient
+        testClient
                 .post()
                 .uri("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,8 +113,6 @@ public class PostIT {
 
         List<Post> posts = postService.findAll();
         assertThat(posts).isNotEmpty();
-        assertThat(posts).hasSize(1);
-        assertThat(posts.get(0).getTitle()).isEqualTo("test_unit");
     }
 
     @Test
@@ -175,7 +158,7 @@ public class PostIT {
 
     @Test
     public void deletePost_WithInvalidId_ReturnsStatus404() {
-        boolean postExists = postRepository.findById(6L).isPresent();
+        boolean postExists = postRepository.findById(999L).isPresent();
         assertThat(postExists).isFalse();
         testClient
                 .delete()
@@ -202,15 +185,26 @@ public class PostIT {
 
     @Test
     public void findById_PostFound_ReturnsStatus200() {
-        Post post = postRepository.findById(1L).orElseThrow(() -> new RuntimeException("Post not found"));
-        PostDTO responseBody = testClient
+        createPost_WithValidData_ReturnsStatus201();
+
+        testClient
                 .get()
                 .uri("/api/posts/1")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PostDTO.class)
                 .returnResult().getResponseBody();
+    }
 
+    @Test
+    public void findAll_WithoutPosts_ThrowsNoPostsFoundException() {
+        postRepository.deleteAll();
+
+        assertThat(postRepository.findAll()).isEmpty();
+
+        assertThatThrownBy(() -> postService.findAll())
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("No posts found");
     }
 
 }

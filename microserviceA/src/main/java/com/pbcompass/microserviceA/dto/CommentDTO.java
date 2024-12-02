@@ -11,6 +11,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentDTO implements Serializable {
 
     private Long postId;
@@ -37,6 +39,5 @@ public class CommentDTO implements Serializable {
         this.postId = postId;
         this.name = name;
         this.email = email;
-        this.body = body;
     }
 }

@@ -11,8 +11,6 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class UpdatePostDTO implements Serializable {
 
     private Long userId;
@@ -27,7 +25,6 @@ public class UpdatePostDTO implements Serializable {
     private String body;
 
     public UpdatePostDTO(String title, String body) {
-        this.title = title;
-        this.body = body;
+        this.title = title
     }
 }

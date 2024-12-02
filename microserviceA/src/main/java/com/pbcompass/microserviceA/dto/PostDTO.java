@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostDTO implements Serializable {
 
     @NotNull
@@ -51,4 +52,5 @@ public class PostDTO implements Serializable {
         this.title = title;
         this.body = body;
     }
+
 }

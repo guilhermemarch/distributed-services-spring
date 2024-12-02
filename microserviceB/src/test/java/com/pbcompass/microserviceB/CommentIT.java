@@ -91,9 +91,28 @@ public class CommentIT {
         assertThat(responseBody.getEmail()).isEqualTo("jane.doe@example.com");
         assertThat(responseBody.getBody()).isEqualTo("Updated comment body");
     }
-
     @Test
     @Order(3)
+    public void updateComment_WithInvalidData_ReturnsStatus400() {
+
+        CommentDTO invalidUpdateDTO = new CommentDTO(postId, "", "invalid-email", "");
+
+        testClient
+                .put()
+                .uri("/api/posts/" + postId + "/" + commentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(invalidUpdateDTO)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(400)
+                .jsonPath("$.error").isEqualTo("Bad Request")
+                .jsonPath("$.method").isEqualTo("PUT")
+                .jsonPath("$.path").isEqualTo("/api/posts/" + postId + "/" + commentId);
+    }
+
+    @Test
+    @Order(4)
     public void findAllComments_ForPost_ReturnsStatus200() {
         testClient
                 .get()
@@ -104,17 +123,17 @@ public class CommentIT {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void deleteComment_ReturnsStatus204() {
         testClient
                 .delete()
-                .uri("/api/posts/1/" + commentId)  // Corrigido para usar o commentId correto
+                .uri("/api/posts/1/" + commentId)
                 .exchange()
                 .expectStatus().isNoContent();
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void deleteComment_NotFound_ReturnsStatus404() {
         testClient
                 .delete()
@@ -127,7 +146,7 @@ public class CommentIT {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void createComment_WithInvalidData_ReturnsStatus400() {
         CommentDTO invalidComment = new CommentDTO(postId, "", "missing.email@example.com", "");
 
@@ -144,19 +163,37 @@ public class CommentIT {
                 .jsonPath("path").isEqualTo("/api/posts/1/comments");
     }
     @Test
-    @Order(7)
+    @Order(8)
     public void syncDataComments_ReturnsStatus200() {
         testClient
                 .get()
                 .uri("/api/posts/syncDataComments")
                 .exchange()
-                .expectStatus().isOk() // Altere para verificar o status 200
+                .expectStatus().isOk()
                 .expectBodyList(CommentDTO.class)
                 .consumeWith(response -> {
                     List<CommentDTO> createdComments = response.getResponseBody();
                     assertThat(createdComments).isNotEmpty();
                 });
     }
+
+    @Test
+    @Order(9)
+    public void updateComment_NotFound_ReturnsStatus404() {
+        CommentDTO updateDTO = new CommentDTO(postId, "Non-existent Author", "nonexistent@example.com", "This comment does not exist");
+
+        testClient
+                .put()
+                .uri("/api/posts/" + postId + "/99999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(updateDTO)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("$.status").isEqualTo(404)
+                .jsonPath("$.error").isEqualTo("Not Found");
+    }
+
 
     private Long checkIfPostExists(Long postId) {
         return postRepository.findById(postId).map(post -> post.getId()).orElse(null);

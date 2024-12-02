@@ -16,10 +16,10 @@ import com.pbcompass.microserviceA.dto.PostDTO;
 import com.pbcompass.microserviceA.entity.Post;
 import com.pbcompass.microserviceA.mapper.PostMapper;
 
-
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "https://editor.swagger.io")
 @RequestMapping("/api/posts")
 public class PostController {
 
@@ -66,8 +66,8 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
 
-    @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable Long postId, @RequestBody @Valid CommentDTO dto) {
+    @PostMapping("/{postId}/comments") 
+    public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") Long postId, @RequestBody CommentDTO dto) {
         CommentDTO createdComment = commentService.createComment(postId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }

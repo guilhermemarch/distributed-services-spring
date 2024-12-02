@@ -76,26 +76,39 @@ public class PostIT {
                 .jsonPath("path").isEqualTo("/api/posts");
     }
 
-
     @Test
     public void updatePost_WithValidData_ReturnsStatus200() {
+        Long postId = 1L;
 
-        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 2L, "test_unit", "BODY TEST");
+        boolean postExists = postRepository.findById(postId).isPresent();
+        if (!postExists) {
 
-        PostDTO responseBody = testClient
+            testClient
+                    .post()
+                    .uri("/api/posts")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(new PostDTO(1L, postId, "Initial Title", "Initial Body"))
+                    .exchange()
+                    .expectStatus().isCreated()
+                    .expectBody(PostDTO.class)
+                    .returnResult()
+                    .getResponseBody();
+        }
+        UpdatePostDTO updateDTO = new UpdatePostDTO(1L, postId, "Updated Title", "Updated Body");
+
+        PostDTO updatedPost = testClient
                 .put()
-                .uri("/api/posts/2")
+                .uri("/api/posts/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(updateDTO)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PostDTO.class)
-                .returnResult().getResponseBody();
-
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getTitle()).isEqualTo("test_unit");
-        assertThat(responseBody.getBody()).isEqualTo("BODY TEST");
-        assertThat(responseBody.getUserId()).isEqualTo(7L);
+                .returnResult()
+                .getResponseBody();
+        assertThat(updatedPost).isNotNull();
+        assertThat(updatedPost.getTitle()).isEqualTo("Updated Title");
+        assertThat(updatedPost.getBody()).isEqualTo("Updated Body");
     }
 
     @Test

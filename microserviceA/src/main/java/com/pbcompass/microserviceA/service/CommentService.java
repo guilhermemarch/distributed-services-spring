@@ -26,8 +26,17 @@ public class CommentService {
         return commentClient.fetchOptionalCommentId(commentId);
     }*/
 
-    public CommentDTO updatePost(Long postId, Long commentId, CommentDTO commentdto) {
-        CommentDTO commentUpd = fetchCommentByPostIdAndCommentId(postId, commentId);
+    public Comment updateComment(Long postId, Long commentId, CommentDTO commentdto) {
+        Post post = commentClient.fetchOptionalPostById(postId)
+                .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + postId));
+
+        Comment commentUpd = commentClient.fetchOptionalCommentId(commentId)
+                .orElseThrow(() -> new ObjectNotFoundException("No comment found with the id " + commentId));
+
+        if (!post.getComments().contains(commentUpd)) {
+            throw new ObjectNotFoundException("No comment found with the id " + commentId + " in post with id " + postId);
+        }
+
         commentUpd.getPostId();
         commentUpd.getId();
         commentUpd.setName(commentdto.getName());

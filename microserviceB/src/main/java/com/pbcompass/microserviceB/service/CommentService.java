@@ -94,8 +94,8 @@ public class CommentService {
         return comments;
     }
 
-    public Comment update(Long id, Long commentId, Comment comment) {
-        Post post = postRepository.findById(id)
+    public Comment update(Long postId, Long commentId, Comment comment) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ObjectNotFoundException("Post not found"));
 
         Comment commentUpd = commentRepository.findById(commentId)

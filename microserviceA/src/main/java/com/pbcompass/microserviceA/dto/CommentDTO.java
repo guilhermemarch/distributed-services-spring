@@ -28,16 +28,4 @@ public class CommentDTO implements Serializable {
 
     @NotBlank
     private String body;
-
-    public CommentDTO(String name, String email, String body) {
-        this.name = name;
-        this.email = email;
-        this.body = body;
-    }
-
-    public CommentDTO(Long postId, String name, String email, String body) {
-        this.postId = postId;
-        this.name = name;
-        this.email = email;
-    }
 }

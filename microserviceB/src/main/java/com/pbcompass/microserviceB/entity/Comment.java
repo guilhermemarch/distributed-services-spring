@@ -35,12 +35,12 @@ public class Comment implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comments = (Comment) o;
-        return Objects.equals(documentId, comments.documentId);
+        Comment comment = (Comment) o;
+        return Objects.equals(id, comment.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(documentId);
+        return Objects.hashCode(id);
     }
 }

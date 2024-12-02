@@ -1,6 +1,7 @@
 package com.pbcompass.microserviceA.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.entity.Comment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PostDTO implements Serializable {
 
@@ -30,45 +33,24 @@ public class PostDTO implements Serializable {
     private String body;
 
     @DBRef(lazy = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentDTO> comments = new ArrayList<>();
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
+    public PostDTO(String title, String body) {
         this.title = title;
-    }
-
-    public void setBody(String body) {
         this.body = body;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public PostDTO(@NotNull Long userId, String title, String body) {
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
     }
+
+    public PostDTO(@NotNull Long userId, Long id, String title, String body) {
+        this.userId = userId;
+        this.id = id;
+        this.title = title;
+        this.body = body;
+    }
+
 }

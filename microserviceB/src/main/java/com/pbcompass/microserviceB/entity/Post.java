@@ -37,11 +37,11 @@ public class Post implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(documentId, post.documentId);
+        return Objects.equals(id, post.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(documentId);
+        return Objects.hashCode(id);
     }
 }

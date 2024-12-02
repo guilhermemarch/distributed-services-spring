@@ -2,9 +2,12 @@ package com.pbcompass.microserviceA.service;
 
 import com.pbcompass.microserviceA.dto.CommentDTO;
 import com.pbcompass.microserviceA.dto.PostDTO;
+import com.pbcompass.microserviceA.dto.UpdateCommentDTO;
+import com.pbcompass.microserviceA.dto.UpdatePostDTO;
 import com.pbcompass.microserviceA.entity.Comment;
 import com.pbcompass.microserviceA.entity.Post;
 import com.pbcompass.microserviceA.feign.PostClient;
+import com.pbcompass.microserviceA.mapper.CommentMapper;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ public class CommentService {
     
     @Autowired
     private PostClient commentClient;
+    @Autowired
+    private CommentMapper commentMapper;
 
     public CommentDTO fetchCommentByPostIdAndCommentId(Long postId, Long commentId) {
         return commentClient.fetchCommentByPostIdAndCommentId(postId, commentId);
@@ -49,7 +54,6 @@ public class CommentService {
         return commentClient.createComment(postId, comment);
     }
 
-
     public void deleteComment(Long postId, Long commentId) {
         Post post = commentClient.fetchOptionalPostById(postId)
                 .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + postId));
@@ -60,7 +64,6 @@ public class CommentService {
         if (!post.getComments().contains(comment)) {
             throw new ObjectNotFoundException("No comment found with the id " + commentId + " in post with id " + postId);
         }
-
 
         post.getComments().remove(comment);
         commentClient.deleteByPostIdAndCommentId(postId, commentId);

@@ -13,11 +13,14 @@ import java.util.Optional;
 @FeignClient(name = "microservicob", url = "http://localhost:8081/api")
 public interface PostClient {
 
-    @GetMapping("/posts/allposts")
+    @GetMapping("/posts/allPosts")
     List<PostDTO> fetchAllPosts();
 
     @GetMapping("/posts/{id}")
-    Optional<Post> fetchPostById(@PathVariable Long id);
+    PostDTO fetchPostById(@PathVariable Long id);
+
+    @GetMapping("/posts/{id}")
+    Optional<Post> fetchOptionalPostById(@PathVariable Long id);
 
     @PostMapping("/posts")
     Post createPost(Post post);
@@ -48,6 +51,7 @@ public interface PostClient {
 
     @DeleteMapping("/posts/{commentId}")
     void deleteCommentById(@PathVariable Long commendId);
+
     @GetMapping("/posts/{postId}/comments")
 
     List<CommentDTO> fetchCommentsByPostId(@PathVariable long postId);

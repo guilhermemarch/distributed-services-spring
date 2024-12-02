@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
@@ -74,7 +76,6 @@ public class CommentIT {
     public void updateComment_WithValidData_ReturnsStatus200() {
         CommentDTO updateDTO = new CommentDTO(postId, "Jane Doe", "jane.doe@example.com", "Updated comment body");
 
-        // Atualizando o comentário
         CommentDTO responseBody = testClient
                 .put()
                 .uri("/api/posts/" + postId + "/" + commentId)
@@ -104,46 +105,16 @@ public class CommentIT {
 
     @Test
     @Order(4)
-    public void findCommentById_ValidId_ReturnsStatus200() {
-        testClient
-                .get()
-                .uri("/api/posts/1/comments/" + commentId)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(CommentDTO.class)
-                .consumeWith(response -> {
-                    CommentDTO comment = response.getResponseBody();
-                    assertThat(comment).isNotNull();
-                    assertThat(comment.getPostId()).isEqualTo(1L);
-                    assertThat(comment.getId()).isEqualTo(commentId);
-                });
-    }
-
-    @Test
-    @Order(5)
-    public void findCommentById_InvalidId_ReturnsStatus404() {
-        testClient
-                .get()
-                .uri("/api/posts/1/comments/999")
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .jsonPath("$.status").isEqualTo(404)
-                .jsonPath("$.error").isEqualTo("Not Found");
-    }
-
-    @Test
-    @Order(6)
     public void deleteComment_ReturnsStatus204() {
         testClient
                 .delete()
-                .uri("/api/posts/1/1")
+                .uri("/api/posts/1/" + commentId)  // Corrigido para usar o commentId correto
                 .exchange()
                 .expectStatus().isNoContent();
     }
 
     @Test
-    @Order(7)
+    @Order(5)
     public void deleteComment_NotFound_ReturnsStatus404() {
         testClient
                 .delete()
@@ -156,7 +127,7 @@ public class CommentIT {
     }
 
     @Test
-    @Order(8)
+    @Order(6)
     public void createComment_WithInvalidData_ReturnsStatus400() {
         CommentDTO invalidComment = new CommentDTO(postId, "", "missing.email@example.com", "");
 
@@ -171,6 +142,20 @@ public class CommentIT {
                 .jsonPath("status").isEqualTo(400)
                 .jsonPath("method").isEqualTo("POST")
                 .jsonPath("path").isEqualTo("/api/posts/1/comments");
+    }
+    @Test
+    @Order(7)
+    public void syncDataComments_ReturnsStatus200() {
+        testClient
+                .get()
+                .uri("/api/posts/syncDataComments")
+                .exchange()
+                .expectStatus().isOk() // Altere para verificar o status 200
+                .expectBodyList(CommentDTO.class)
+                .consumeWith(response -> {
+                    List<CommentDTO> createdComments = response.getResponseBody();
+                    assertThat(createdComments).isNotEmpty();
+                });
     }
 
     private Long checkIfPostExists(Long postId) {

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "https://editor.swagger.io")
 @RequestMapping(value = "/api/posts")
 public class CommentController {
 
@@ -49,7 +50,7 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable Long id, @RequestBody @Valid CommentDTO dto) {
+    public ResponseEntity<CommentDTO> createComment(@PathVariable Long id, @RequestBody CommentDTO dto) {
         Comment comment = commentService.createComment(id, commentMapper.toComment(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.toDTO(comment));
     }

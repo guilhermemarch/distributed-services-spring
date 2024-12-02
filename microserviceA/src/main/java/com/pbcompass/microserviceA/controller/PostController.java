@@ -20,6 +20,7 @@ import com.pbcompass.microserviceA.mapper.PostMapper;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "https://editor.swagger.io")
 @RequestMapping("/api/posts")
 public class PostController {
 
@@ -67,11 +68,11 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") Long postId, @RequestBody @Valid CommentDTO dto) {
-        Comment commentEntity = commentMapper.toComment(dto);
-        Comment createdComment = commentService.createComment(postId, commentEntity);
-        CommentDTO responseDto = commentMapper.toDTO(createdComment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") Long postId, @RequestBody CommentDTO dto) {
+        //Comment commentEntity = commentMapper.toComment(dto);
+        CommentDTO createdComment = commentService.createComment(postId, dto);
+        //CommentDTO responseDto = commentMapper.toDTO(createdComment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     @DeleteMapping(value = "/{id}")

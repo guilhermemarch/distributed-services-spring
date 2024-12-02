@@ -18,7 +18,6 @@ import com.pbcompass.microserviceA.mapper.PostMapper;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -38,13 +37,13 @@ public class PostController {
         this.commentMapper = commentMapper;
     }
 
-    @GetMapping("/allposts")
+    @GetMapping("/allPosts")
     public ResponseEntity<List<PostDTO>> getAllPosts() {
         return ResponseEntity.ok(postService.fetchAllPosts());
     }
 
     @GetMapping("/{id}")
-    public Optional<Post> getPostById(@PathVariable Long id) {
+    public PostDTO getPostById(@PathVariable Long id) {
         return postService.fetchPostById(id);
     }
 
@@ -54,13 +53,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postMapper.toDTO(post));
     }
 
-    /*
-        @PutMapping("/{id}")
-        public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
-            PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
-            return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
-        }
-    */
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdatePostDTO> updatePost(@PathVariable Long id, @RequestBody @Valid UpdatePostDTO dto) {
+        PostDTO post = postService.updatePost(id, postMapper.UpdatetoPost(dto));
+        return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
+    }
+
     @GetMapping("/{postid}/comments")
     public ResponseEntity<List<CommentDTO>> getCommentsByPost(@PathVariable("postId") long postId) {
         List<CommentDTO> comments = commentService.fetchCommentsByPostId(postId);

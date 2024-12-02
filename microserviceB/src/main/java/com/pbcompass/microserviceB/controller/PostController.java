@@ -76,7 +76,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPosts);
     }
 
-    @GetMapping(value = "/allposts", produces = "application/json")
+    @GetMapping(value = "/allPosts", produces = "application/json")
     public ResponseEntity<List<PostDTO>> findAll() {
         List<Post> posts = postService.findAll();
         List<PostDTO> postDTOs = posts.stream().map(postMapper::toDTO).collect(Collectors.toList());

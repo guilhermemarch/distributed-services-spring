@@ -46,7 +46,7 @@ public class CommentService {
 
 
     public void deleteComment(Long postId, Long commentId) {
-        Post post = commentClient.fetchPostById(postId)
+        Post post = commentClient.fetchOptionalPostById(postId)
                 .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + postId));
 
         Comment comment = commentClient.fetchOptionalCommentId(commentId)

@@ -1,6 +1,7 @@
 package com.pbcompass.microserviceA.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pbcompass.microserviceB.dto.CommentDTO;
 import com.pbcompass.microserviceB.entity.Comment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostDTO implements Serializable {
 
     @NotNull
@@ -32,5 +32,23 @@ public class PostDTO implements Serializable {
     private String body;
 
     @DBRef(lazy = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentDTO> comments = new ArrayList<>();
+
+    public PostDTO(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public PostDTO(@NotNull Long userId, String title, String body) {
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
+    }
+
+    public PostDTO(@NotNull Long userId, Long id, String title, String body) {
+        this.userId = userId;
+        this.id = id;
+        this.title = title;
+        this.body = body;
+    }
 }

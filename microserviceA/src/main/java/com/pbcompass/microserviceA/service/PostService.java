@@ -38,7 +38,7 @@ public class PostService {
         return postClient.fetchPostById(id);
     }
 
-    public List<CommentDTO> fetchCommentsByPostId(String postId) {
+    public List<CommentDTO> fetchCommentsByPostId(Long postId) {
         return postClient.fetchCommentsByPostId(postId);
     }
 

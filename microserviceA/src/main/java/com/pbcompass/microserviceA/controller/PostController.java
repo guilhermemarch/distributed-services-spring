@@ -61,17 +61,15 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/comments")
-    public ResponseEntity<List<CommentDTO>> getCommentsByPost(@PathVariable("postId") Long postId) {
+    public ResponseEntity<List<CommentDTO>> getCommentsByPost(@PathVariable Long postId) {
         List<CommentDTO> comments = commentService.fetchCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") Long postId, @RequestBody @Valid CommentDTO dto) {
-        Comment commentEntity = commentMapper.toComment(dto);
-        Comment createdComment = commentService.createComment(postId, commentEntity);
-        CommentDTO responseDto = commentMapper.toDTO(createdComment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<CommentDTO> createComment(@PathVariable Long postId, @RequestBody @Valid CommentDTO dto) {
+        CommentDTO createdComment = commentService.createComment(postId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     @DeleteMapping(value = "/{id}")

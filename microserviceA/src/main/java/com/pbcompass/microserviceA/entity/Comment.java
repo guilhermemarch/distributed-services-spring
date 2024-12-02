@@ -1,20 +1,19 @@
 package com.pbcompass.microserviceA.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pbcompass.microserviceA.dto.CommentDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Comment {
+public class Comment implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String documentId;
@@ -35,11 +34,11 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return Objects.equals(documentId, comment.documentId);
+        return Objects.equals(id, comment.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(documentId);
+        return Objects.hashCode(id);
     }
 }

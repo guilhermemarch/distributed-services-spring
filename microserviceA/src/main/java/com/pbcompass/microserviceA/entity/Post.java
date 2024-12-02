@@ -1,10 +1,8 @@
 package com.pbcompass.microserviceA.entity;
 
-import com.pbcompass.microserviceA.entity.Comment;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
@@ -12,21 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Document
-@ToString
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     private String documentId;
+
     private Long userId;
+
     @Field("postId")
     private Long id;
+
     private String title;
+
     private String body;
 
     @DBRef(lazy = true)
@@ -37,11 +36,11 @@ public class Post implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(documentId, post.documentId);
+        return Objects.equals(id, post.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(documentId);
+        return Objects.hashCode(id);
     }
 }

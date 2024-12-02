@@ -25,4 +25,9 @@ public class UpdatePostDTO implements Serializable {
 
     @NotBlank
     private String body;
+
+    public UpdatePostDTO(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
 }

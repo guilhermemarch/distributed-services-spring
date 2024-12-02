@@ -30,6 +30,7 @@ public class PostController {
     private CommentService commentService;
 
     private final PostMapper postMapper;
+
     private final CommentMapper commentMapper;
 
     public PostController(PostMapper postMapper, CommentMapper commentMapper) {

@@ -78,6 +78,12 @@ public class PostIT {
 
     @Test
     public void updatePost_WithValidData_ReturnsStatus200() {
+
+        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 1L, "test_unit", "BODY TEST");
+
+        PostDTO responseBody = testClient
+                .put()
+                .uri("/api/posts/1")
         Long postId = 1L;
 
         boolean postExists = postRepository.findById(postId).isPresent();
@@ -112,13 +118,42 @@ public class PostIT {
     }
 
     @Test
-    public void findAll_WithPosts_ReturnsPostList() {
+    public void updatePost_WithInvalidData_ReturnsStatus400() {
+        testClient
+                .put()
+                .uri("/api/posts/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UpdatePostDTO("", ""))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .jsonPath("status").isEqualTo(400)
+                .jsonPath("method").isEqualTo("PUT")
+                .jsonPath("path").isEqualTo("/api/posts/1");
+    }
 
+    @Test
+    public void updatePost_WithInvalidId_ReturnsStatus404() {
+        testClient
+                .put()
+                .uri("/api/posts/999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UpdatePostDTO("TITLE TEST", "BODY TEST"))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("status").isEqualTo(404)
+                .jsonPath("method").isEqualTo("PUT")
+                .jsonPath("path").isEqualTo("/api/posts/999");
+    }
+
+    @Test
+    public void findAll_WithPosts_ReturnsStatus200() {
         testClient
                 .post()
                 .uri("/api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new PostDTO(7L, 1L, "test_unit", "BODY TEST"))
+                .bodyValue(new PostDTO(1L, 1L, "TITLE TEST", "BODY TEST"))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(PostDTO.class)
@@ -198,7 +233,15 @@ public class PostIT {
 
     @Test
     public void findById_PostFound_ReturnsStatus200() {
-        createPost_WithValidData_ReturnsStatus201();
+        testClient
+                .post()
+                .uri("/api/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new PostDTO(1L, 1L, "TITLE TEST", "BODY TEST"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(PostDTO.class)
+                .returnResult().getResponseBody();
 
         testClient
                 .get()
@@ -210,7 +253,7 @@ public class PostIT {
     }
 
     @Test
-    public void findAll_WithoutPosts_ThrowsNoPostsFoundException() {
+    public void findAll_WithoutPosts_ReturnsStatus404() {
         postRepository.deleteAll();
 
         assertThat(postRepository.findAll()).isEmpty();

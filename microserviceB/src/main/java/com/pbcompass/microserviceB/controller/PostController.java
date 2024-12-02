@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "https://editor.swagger.io")
 @RequestMapping(value = "/api/posts")
 public class PostController {
 

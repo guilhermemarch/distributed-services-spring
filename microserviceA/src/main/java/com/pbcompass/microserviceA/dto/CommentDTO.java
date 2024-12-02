@@ -9,14 +9,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentDTO implements Serializable {
-
-    @Id
-    private String documentId;
 
     private Long postId;
 
@@ -29,16 +24,43 @@ public class CommentDTO implements Serializable {
 
     private String body;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CommentDTO that = (CommentDTO) o;
-        return Objects.equals(documentId, that.documentId);
+    public Long getPostId() {
+        return postId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(documentId);
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

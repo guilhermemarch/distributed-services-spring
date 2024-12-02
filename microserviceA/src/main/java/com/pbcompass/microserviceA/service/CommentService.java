@@ -45,7 +45,7 @@ public class CommentService {
         return commentClient.fetchCommentsByPostId(postId);
     }
 
-    public Comment createComment(Long postId, Comment comment) {
+    public CommentDTO createComment(Long postId, CommentDTO comment) {
         return commentClient.createComment(postId, comment);
     }
 

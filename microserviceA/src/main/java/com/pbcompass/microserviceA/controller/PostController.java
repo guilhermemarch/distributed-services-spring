@@ -82,8 +82,8 @@ public class PostController {
 
     @PutMapping("/{postId}/{commentId}")
     public ResponseEntity<UpdateCommentDTO> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid UpdateCommentDTO dto) {
-        CommentDTO commentDTO = commentService.updatePost(postId, commentId, commentMapper.UpdatetoComment(dto));
-        return ResponseEntity.ok(commentMapper.UpdateCommentToDTO(commentDTO));
+        Comment comment = commentService.updateComment(postId, commentId, commentMapper.UpdatetoComment(dto));
+        return ResponseEntity.ok(commentMapper.toUpdateToComment(comment));
     }
 
     @DeleteMapping(value = "/{postId}/{commentId}")

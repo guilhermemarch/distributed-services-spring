@@ -40,20 +40,19 @@ public interface PostClient {
     @GetMapping("/posts/{commentId}")
     Optional<Comment> fetchOptionalCommentId(@PathVariable Long commentId);
 
+    @GetMapping("/posts/{commentId}")
+    Optional<CommentDTO> fetchOptionalCommentDTOId(@PathVariable Long commentId);
+
     @GetMapping("/posts/{postId}/{commentId}")
     CommentDTO fetchCommentByPostIdAndCommentId(@PathVariable Long postId, @PathVariable Long commentId);
 
     @PutMapping("/posts/{postId}/{commentId}")
-    CommentDTO updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentDTO commentDTO);
+    Comment updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody Comment comment);
 
     @DeleteMapping("/posts/{postId}/{commentId}")
     void deleteByPostIdAndCommentId(@PathVariable Long postId, @PathVariable Long commentId);
 
-    @DeleteMapping("/posts/{commentId}")
-    void deleteCommentById(@PathVariable Long commendId);
-
     @GetMapping("/posts/{postId}/comments")
-
     List<CommentDTO> fetchCommentsByPostId(@PathVariable long postId);
 
     @PostMapping("/posts/{id}/comments")

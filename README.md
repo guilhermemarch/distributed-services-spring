@@ -36,5 +36,17 @@ The document will be created when you perform the HTTP POST request to syncData.
 
 Be aware that the port used for MongoDB is 27017. If you are using a different port, you can update it in the application.properties file of MicroserviceB and in the application-test.properties file located in the test directory of MicroserviceB.
 
+## How to use
+* Open the IntelliJ IDEA
+* Run MicroserviceA application
+* Run MicroserviceB application
+* Go to Postman
+* Make a POST request to ``` http://localhost:8081/api/posts/syncData ```
+* Make aother POST request to ``` http://localhost:8081/api/posts/syncDataComments ```
+* Refresh your MongoDB localhost page, the document and the collections of this application should appear
+* Now you have a populated document and can perform any desired operations on it
+
+
+
 
 

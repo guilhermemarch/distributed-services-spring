@@ -24,17 +24,17 @@ public class PostService {
     public Post createPost(Post post) {
         return postClient.createPost(post);
     }
-/*
+
     public PostDTO updatePost(Long id, PostDTO postdto) {
-        Optional<Post> postUpd = fetchPostById(id);
+        PostDTO postUpd = fetchPostById(id);
         postUpd.getUserId();
         postUpd.getId();
         postUpd.setTitle(postdto.getTitle());
         postUpd.setBody(postdto.getBody());
         return postClient.updatePost(id, postUpd);
     }
-*/
-    public Optional<Post> fetchPostById(Long id) {
+
+    public PostDTO fetchPostById(Long id) {
         return postClient.fetchPostById(id);
     }
 

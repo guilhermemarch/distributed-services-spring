@@ -4,7 +4,10 @@ import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdatePostDTO;
 import com.pbcompass.microserviceB.repository.PostRepository;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -19,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PostIT {
 
@@ -32,6 +36,7 @@ public class PostIT {
     private PostService postService;
 
     @Test
+    @Order(1)
     public void createPost_WithValidData_ReturnsStatus201() {
         PostDTO responseBody = testClient
                 .post()
@@ -50,6 +55,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(2)
     public void createPost_WithInvalidData_ReturnsStatus400() {
         testClient
                 .post()
@@ -77,18 +83,12 @@ public class PostIT {
     }
 
     @Test
+    @Order(3)
     public void updatePost_WithValidData_ReturnsStatus200() {
-
-        UpdatePostDTO updateDTO = new UpdatePostDTO(7L, 1L, "test_unit", "BODY TEST");
-
-        PostDTO responseBody = testClient
-                .put()
-                .uri("/api/posts/1")
         Long postId = 1L;
 
         boolean postExists = postRepository.findById(postId).isPresent();
         if (!postExists) {
-
             testClient
                     .post()
                     .uri("/api/posts")
@@ -118,6 +118,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(4)
     public void updatePost_WithInvalidData_ReturnsStatus400() {
         testClient
                 .put()
@@ -133,6 +134,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(5)
     public void updatePost_WithInvalidId_ReturnsStatus404() {
         testClient
                 .put()
@@ -148,6 +150,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(6)
     public void findAll_WithPosts_ReturnsStatus200() {
         testClient
                 .post()
@@ -164,6 +167,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(7)
     public void findPostsJsonPlaceholder_ReturnStatus200() {
         List<PostDTO> responseBody = testClient
                 .get()
@@ -178,33 +182,7 @@ public class PostIT {
     }
 
     @Test
-    public void syncData_ReturnStatus201() {
-        List<PostDTO> responseBody = testClient
-                .post()
-                .uri("/api/posts/syncData")
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBodyList(PostDTO.class)
-                .returnResult().getResponseBody();
-
-        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        postRepository.deleteAll();
-    }
-
-    @Test
-    public void deletePost_WithManualId_ReturnsStatus204() {
-        boolean postExistsBeforeDelete = postRepository.findById(1L).isPresent();
-        assertThat(postExistsBeforeDelete).isTrue();
-        testClient
-                .delete()
-                .uri("/api/posts/1")
-                .exchange()
-                .expectStatus().isNoContent();
-        boolean postExistsAfterDelete = postRepository.findById(1L).isPresent();
-        assertThat(postExistsAfterDelete).isFalse();
-    }
-
-    @Test
+    @Order(8)
     public void deletePost_WithInvalidId_ReturnsStatus404() {
         boolean postExists = postRepository.findById(999L).isPresent();
         assertThat(postExists).isFalse();
@@ -220,6 +198,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(9)
     public void findById_PostNotFound_ReturnsStatus404() {
         testClient
                 .get()
@@ -232,6 +211,7 @@ public class PostIT {
     }
 
     @Test
+    @Order(10)
     public void findById_PostFound_ReturnsStatus200() {
         testClient
                 .post()
@@ -253,9 +233,38 @@ public class PostIT {
     }
 
     @Test
+    @Order(11)
+    public void deletePost_WithManualId_ReturnsStatus204() {
+        boolean postExistsBeforeDelete = postRepository.findById(1L).isPresent();
+        assertThat(postExistsBeforeDelete).isTrue();
+        testClient
+                .delete()
+                .uri("/api/posts/1")
+                .exchange()
+                .expectStatus().isNoContent();
+        boolean postExistsAfterDelete = postRepository.findById(1L).isPresent();
+        assertThat(postExistsAfterDelete).isFalse();
+    }
+
+    @Test
+    @Order(12)
+    public void syncData_ReturnStatus201() {
+        List<PostDTO> responseBody = testClient
+                .post()
+                .uri("/api/posts/syncData")
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBodyList(PostDTO.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+        postRepository.deleteAll();
+    }
+
+    @Test
+    @Order(13)
     public void findAll_WithoutPosts_ReturnsStatus404() {
         postRepository.deleteAll();
-
         assertThat(postRepository.findAll()).isEmpty();
 
         assertThatThrownBy(() -> postService.findAll())

@@ -22,11 +22,7 @@ public class CommentService {
         return commentClient.fetchCommentByPostIdAndCommentId(postId, commentId);
     }
 
-/*    public Optional<CommentDTO> fetchOptionalCommentByPostIdAndCommentId(Long postId, Long commentId) {
-        return commentClient.fetchOptionalCommentId(commentId);
-    }*/
-
-    public Comment updateComment(Long postId, Long commentId, CommentDTO commentdto) {
+    public Comment updateComment(Long postId, Long commentId, Comment comment) {
         Post post = commentClient.fetchOptionalPostById(postId)
                 .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + postId));
 
@@ -39,9 +35,9 @@ public class CommentService {
 
         commentUpd.getPostId();
         commentUpd.getId();
-        commentUpd.setName(commentdto.getName());
-        commentUpd.setEmail(commentdto.getEmail());
-        commentUpd.setBody(commentdto.getEmail());
+        commentUpd.setName(comment.getName());
+        commentUpd.setEmail(comment.getEmail());
+        commentUpd.setBody(comment.getEmail());
         return commentClient.updateComment(postId, commentId, commentUpd);
     }
 

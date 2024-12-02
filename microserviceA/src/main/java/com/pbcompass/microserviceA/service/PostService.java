@@ -44,7 +44,7 @@ public class PostService {
 
     public void deleteByPostID(Long id) {
         Optional<PostDTO> post = postClient.fetchByPostID(id);
-        if (!post.isPresent()) {
+        if (post.isEmpty()) {
             throw new ObjectNotFoundException("No posts found with the id: " + id);
         }
 

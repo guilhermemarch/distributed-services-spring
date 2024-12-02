@@ -31,11 +31,11 @@ public interface PostClient {
     @GetMapping("/posts/{postId}/comments")
     List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);
 
-    @GetMapping("/{id}")
-    Optional<PostDTO> fetchByPostID(@PathVariable("id") Long id);
+    @GetMapping("/posts/{id}")
+    Optional<PostDTO> fetchByPostID(@PathVariable Long id);
 
-    @DeleteMapping("/{id}")
-    void deleteById(@PathVariable("id") Long id);
+    @DeleteMapping("/posts/{id}")
+    void deleteById(@PathVariable Long id);
 
     @GetMapping("/posts/{commentId}")
     Optional<Comment> fetchOptionalCommentId(@PathVariable Long commentId);
@@ -53,9 +53,9 @@ public interface PostClient {
     void deleteByPostIdAndCommentId(@PathVariable Long postId, @PathVariable Long commentId);
 
     @GetMapping("/posts/{postId}/comments")
-    List<CommentDTO> fetchCommentsByPostId(@PathVariable long postId);
+    List<CommentDTO> fetchCommentsByPostId(@PathVariable Long postId);
 
-    @PostMapping("/posts/{id}/comments")
-    Comment createComment(@PathVariable("id") Long postId, @RequestBody Comment comment);
+    @PostMapping("/posts/{postId}/comments")
+    Comment createComment(@PathVariable Long postId, @RequestBody Comment comment);
 
 }

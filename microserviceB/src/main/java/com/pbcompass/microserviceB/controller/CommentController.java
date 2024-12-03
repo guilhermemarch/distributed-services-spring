@@ -1,8 +1,10 @@
 package com.pbcompass.microserviceB.controller;
 
 import com.pbcompass.microserviceB.dto.CommentDTO;
+import com.pbcompass.microserviceB.dto.PostDTO;
 import com.pbcompass.microserviceB.dto.UpdateCommentDTO;
 import com.pbcompass.microserviceB.entity.Comment;
+import com.pbcompass.microserviceB.entity.Post;
 import com.pbcompass.microserviceB.mapper.CommentMapper;
 import com.pbcompass.microserviceB.service.CommentService;
 import jakarta.validation.Valid;
@@ -72,5 +74,11 @@ public class CommentController {
     public ResponseEntity<UpdateCommentDTO> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid UpdateCommentDTO dto) {
         Comment comment = commentService.update(postId, commentId, commentMapper.UpdatetoComment(dto));
         return ResponseEntity.ok(commentMapper.UpdateCommentToDTO(comment));
+    }
+
+    @GetMapping("/comment/{commentId}")
+    public ResponseEntity<CommentDTO> findById(@PathVariable Long commentId) {
+        Comment comment = commentService.findCommentById(commentId);
+        return ResponseEntity.ok().body(commentMapper.toDTO(comment));
     }
 }

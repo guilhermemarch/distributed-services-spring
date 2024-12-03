@@ -2,10 +2,10 @@ package com.pbcompass.microserviceA.controller;
 
 import com.pbcompass.microserviceA.dto.UpdateCommentDTO;
 import com.pbcompass.microserviceA.dto.UpdatePostDTO;
-import com.pbcompass.microserviceA.entity.Comment;
 import com.pbcompass.microserviceA.mapper.CommentMapper;
 import com.pbcompass.microserviceA.service.CommentService;
 import com.pbcompass.microserviceA.service.PostService;
+import com.pbcompass.microserviceB.entity.Comment;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,12 +40,13 @@ public class PostController {
 
     @GetMapping("/allPosts")
     public ResponseEntity<List<PostDTO>> getAllPosts() {
-        return ResponseEntity.ok(postService.fetchAllPosts());
+        return ResponseEntity.ok(postService.findAllPosts());
     }
 
     @GetMapping("/{id}")
-    public PostDTO getPostById(@PathVariable Long id) {
-        return postService.fetchPostById(id);
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
+        PostDTO post = postService.findPostById(id);
+        return ResponseEntity.ok().body(post);
     }
 
     @PostMapping
@@ -60,9 +61,23 @@ public class PostController {
         return ResponseEntity.ok(postMapper.UpdatePostToDTO(post));
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletePostById(@PathVariable Long id) {
+        postService.deleteByPostID(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
     @GetMapping("/{postId}/comments")
     public ResponseEntity<List<CommentDTO>> getCommentsByPost(@PathVariable Long postId) {
-        List<CommentDTO> comments = commentService.fetchCommentsByPostId(postId);
+        List<CommentDTO> comments = commentService.findCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/comment/{commentId}")
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long commentId) {
+        CommentDTO comments = commentService.findCommentById(commentId);
         return ResponseEntity.ok(comments);
     }
 
@@ -72,16 +87,10 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletePostById(@PathVariable Long id) {
-        postService.deleteByPostID(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @PutMapping("/{postId}/{commentId}")
     public ResponseEntity<UpdateCommentDTO> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid UpdateCommentDTO dto) {
-        Comment comment = commentService.updateComment(postId, commentId, commentMapper.UpdatetoComment(dto));
-        return ResponseEntity.ok(commentMapper.UpdateCommentToDTO(comment));
+        CommentDTO comment = commentService.updateComment(postId, commentId, commentMapper.UpdateToComment(dto));
+        return ResponseEntity.ok(commentMapper.UpdateToDto(comment));
     }
 
     @DeleteMapping(value = "/{postId}/{commentId}")

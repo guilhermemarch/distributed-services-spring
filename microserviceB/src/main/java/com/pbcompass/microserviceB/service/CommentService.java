@@ -129,4 +129,10 @@ public class CommentService {
     public List<CommentDTO> findCommentsJsonPlaceholder() {
         return commentClient.getComments();
     }
+
+    public Comment findCommentById(Long commentId){
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        return comment.orElseThrow(() -> new ObjectNotFoundException("Comment not found"));
+    }
+
 }

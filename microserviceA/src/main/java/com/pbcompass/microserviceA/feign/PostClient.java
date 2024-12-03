@@ -14,49 +14,38 @@ import java.util.Optional;
 @FeignClient(name = "microservicob", url = "http://localhost:8081/api")
 public interface PostClient {
 
-@GetMapping("/posts/allPosts")
-List<PostDTO> fetchAllPosts();
+    @GetMapping("/posts/allPosts")
+    List<PostDTO> findAllPosts();
 
-@GetMapping("/posts/{id}")
-PostDTO fetchPostById(@PathVariable Long id);
+    @GetMapping("/posts/{id}")
+    Optional<PostDTO> findByPostId(@PathVariable Long id);
 
-@GetMapping("/posts/{id}")
-Optional<Post> fetchOptionalPostById(@PathVariable Long id);
+    @PostMapping("/posts")
+    Post createPost(Post post);
 
-@PostMapping("/posts")
-Post createPost(Post post);
+    @PutMapping("/posts/{id}")
+    PostDTO updatePost(@PathVariable Long id, @RequestBody PostDTO postDto);
 
-@PutMapping("/posts/{id}")
-PostDTO updatePost(@PathVariable Long id, @RequestBody PostDTO postdto);
+    @DeleteMapping("/posts/{id}")
+    void deleteById(@PathVariable Long id);
 
-@GetMapping("/posts/{postId}/comments")
-List<CommentDTO> fetchCommentsByPostId(@PathVariable String postId);
 
-@GetMapping("/posts/{id}")
-Optional<PostDTO> fetchByPostID(@PathVariable Long id);
+//----------------------------------------------------------------------------
 
-@DeleteMapping("/posts/{id}")
-void deleteById(@PathVariable Long id);
 
-@GetMapping("/posts/{commentId}")
-Optional<Comment> fetchOptionalCommentId(@PathVariable Long commentId);
+    @GetMapping("/posts/comment/{commentId}")
+    Optional<CommentDTO> findByCommentId(@PathVariable Long commentId);
 
-@GetMapping("/posts/{commentId}")
-Optional<CommentDTO> fetchOptionalCommentDTOId(@PathVariable Long commentId);
+    @GetMapping("/posts/{postId}/comments")
+    List<CommentDTO> findCommentsByPostId(@PathVariable Long postId);
 
-@GetMapping("/posts/{postId}/{commentId}")
-CommentDTO fetchCommentByPostIdAndCommentId(@PathVariable Long postId, @PathVariable Long commentId);
+    @PostMapping("/posts/{postId}/comments")
+    CommentDTO createComment(@PathVariable Long postId, @RequestBody CommentDTO comment);
 
-@PutMapping("/posts/{postId}/{commentId}")
-Comment updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody Comment comment);
+    @PutMapping("/posts/{postId}/{commentId}")
+    CommentDTO updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentDTO commentDto);
 
-@DeleteMapping("/posts/{postId}/{commentId}")
-void deleteByPostIdAndCommentId(@PathVariable Long postId, @PathVariable Long commentId);
-
-@GetMapping("/posts/{postId}/comments")
-List<CommentDTO> fetchCommentsByPostId(@PathVariable Long postId);
-
-@PostMapping("/posts/{postId}/comments")
-CommentDTO createComment(@PathVariable Long postId, @RequestBody CommentDTO comment);
+    @DeleteMapping("/posts/{postId}/{commentId}")
+    void deleteComment(@PathVariable Long postId, @PathVariable Long commentId);
 
 }

@@ -47,7 +47,7 @@ public class CommentService {
         commentUpd.getId();
         commentUpd.setName(comment.getName());
         commentUpd.setEmail(comment.getEmail());
-        commentUpd.setBody(comment.getEmail());
+        commentUpd.setBody(comment.getBody());
         return commentClient.updateComment(postId, commentId, commentUpd);
     }
 

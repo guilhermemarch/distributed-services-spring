@@ -2,6 +2,7 @@ package com.pbcompass.microserviceA.service;
 
 import com.pbcompass.microserviceA.entity.Post;
 import com.pbcompass.microserviceA.feign.PostClient;
+import com.pbcompass.microserviceB.entity.Comment;
 import com.pbcompass.microserviceB.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,13 @@ public class PostService {
     @Autowired
     private PostClient postClient;
 
-    public List<PostDTO> fetchAllPosts() {
-        return postClient.fetchAllPosts();
+    public List<PostDTO> findAllPosts() {
+        return postClient.findAllPosts();
+    }
+
+    public PostDTO findPostById(Long id) {
+        Optional<PostDTO> post = postClient.findByPostId(id);
+        return post.orElseThrow(() -> new ObjectNotFoundException("Post not found"));
     }
 
     public Post createPost(Post post) {
@@ -26,7 +32,9 @@ public class PostService {
     }
 
     public PostDTO updatePost(Long id, PostDTO postdto) {
-        PostDTO postUpd = fetchPostById(id);
+        PostDTO postUpd = postClient.findByPostId(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No post found with the id " + id));
+
         postUpd.getUserId();
         postUpd.getId();
         postUpd.setTitle(postdto.getTitle());
@@ -34,16 +42,8 @@ public class PostService {
         return postClient.updatePost(id, postUpd);
     }
 
-    public PostDTO fetchPostById(Long id) {
-        return postClient.fetchPostById(id);
-    }
-
-    public List<CommentDTO> fetchCommentsByPostId(Long postId) {
-        return postClient.fetchCommentsByPostId(postId);
-    }
-
     public void deleteByPostID(Long id) {
-        Optional<PostDTO> post = postClient.fetchByPostID(id);
+        Optional<PostDTO> post = postClient.findByPostId(id);
         if (post.isEmpty()) {
             throw new ObjectNotFoundException("No posts found with the id: " + id);
         }

@@ -15,7 +15,9 @@ public interface CommentMapper {
 
     Comment toComment(CommentDTO dto);
 
-    Comment UpdatetoComment(UpdateCommentDTO dto);
+    Comment UpdateToComment(UpdateCommentDTO dto);
+
+    UpdateCommentDTO UpdateToDto(CommentDTO dto);
 
     UpdateCommentDTO UpdateCommentToDTO(Comment comment);
 }

@@ -14,7 +14,6 @@ This project demonstrates a distributed system architecture using two microservi
 * Ruan Carlos Dalla Rosa
 
 
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -133,10 +132,8 @@ The API documentation is available in Swagger format. To view it:
 
 1. Using Postman or any HTTP client, make the following requests:
    ```bash
-   # Sync posts data
    POST http://localhost:8081/api/posts/syncData
 
-   # Sync comments data
    POST http://localhost:8081/api/posts/syncDataComments
    ```
 
@@ -155,10 +152,4 @@ Once the services are running and data is synced, you can:
 
 Refer to the Swagger documentation for detailed endpoint specifications.
 
-## Contributors
 
-* Gabriel Felipe Birck
-* Guilherme Marschall
-* João Pedro Ferreira Ponchiroli
-* Matheus Gotardo Reato
-* Ruan Carlos Dalla Rosa

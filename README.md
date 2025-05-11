@@ -1,4 +1,4 @@
-# Microservices with Java Spring Boot and OpenFeign
+# Distributed Services with Spring
 
 This project demonstrates a distributed system architecture using two microservices that work together to provide an integrated solution. The system follows a client-server pattern where:
 

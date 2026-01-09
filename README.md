@@ -147,7 +147,7 @@ sequenceDiagram
 
 | Tecnologia | Versão | Propósito |
 |------------|--------|-----------|
-| MongoDB | 4.4+ | Banco de dados NoSQL document-oriented |
+| MongoDB | 4.4+ | Banco de dados NoSQL |
 
 ---
 
